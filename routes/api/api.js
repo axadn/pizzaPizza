@@ -9,3 +9,5 @@ router.use("/users", users);
 router.use('/sizes', sizes);
 router.use('/toppings', toppings);
 router.use('/session', session);
+
+module.exports = router;

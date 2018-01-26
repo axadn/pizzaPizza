@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const db = require('./db');
 
 const index = require('./routes/index');
-const api = require('./routes/api');
+const api = require('./routes/api/api');
 
 const app = express();
 
