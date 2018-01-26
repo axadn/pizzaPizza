@@ -6,15 +6,12 @@ const state = {
     pool: null
 };
 
-exports.seed = function seed(done){
-    done();
-}
-
-exports.createDatabase = function createDatabase(done){
-    const queries = fs.readFileSync("createDatabase.sql").toString()
+exports.batchFromFile = function batchFromFile(filename, done){
+    const queries = fs.readFileSync(filename).toString()
     .replace(/(\r\n|\n|\r)/gm," ")
     .replace(/\s+/g, ' ')
     .split(";");
+    if (queries[queries.length - 1] == "") queries.pop();
     let composed = ()=>state.pool.query(queries[queries.length - 1], error=>done(error));
     for(let i = queries.length - 2; i >= 0 ; --i){
         composed = 
@@ -39,7 +36,7 @@ exports.connect = function(done){
         password: 'password',
         database: 'pizzaPizza'
     });
-    exports.createDatabase(done);
+    done();
 };
 
 exports.get = function(){
