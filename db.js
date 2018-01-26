@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const async = require('async');
 const fs = require('fs');
-
+const dbConfig = require('dbConfig');
 const state = {
     pool: null
 };
@@ -32,9 +32,9 @@ exports.batchFromFile = function batchFromFile(filename, done){
 exports.connect = function(done){
     state.pool = mysql.createPool({
         host: 'localhost',
-        user: 'root',
-        password: 'password',
-        database: 'pizzaPizza'
+        user: dbConfig.user,
+        password: dbConfig.password,
+        database: dbConfig.database
     });
     done();
 };
