@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const async = require('async');
+const fs = require('fs');
 
 const state = {
     pool: null
@@ -12,12 +13,23 @@ exports.seed = function seed(done){
 exports.createDatabase = function createDatabase(done){
     const queries = fs.readFileSync("createDatabase.sql").toString()
     .replace(/(\r\n|\n|\r)/gm," ")
-    .replace(/\s+/g, ' ');
-    state.pool.query(queries,
-        function (error, results, fields) {
-            done(err);
-        }
-    );
+    .replace(/\s+/g, ' ')
+    .split(";");
+    let composed = ()=>state.pool.query(queries[queries.length - 1], error=>done(error));
+    for(let i = queries.length - 2; i >= 0 ; --i){
+        composed = 
+        function(callback){
+            return ()=> state.pool.query(queries[i], (error) =>{
+                if(error){
+                    done(error);
+                }
+                else{ 
+                    callback();
+                }
+            });
+        }(composed);
+    }
+    composed();
 }
 
 exports.connect = function(done){
@@ -27,7 +39,7 @@ exports.connect = function(done){
         password: 'password',
         database: 'pizzaPizza'
     });
-    done();
+    exports.createDatabase(done);
 };
 
 exports.get = function(){

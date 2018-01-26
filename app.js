@@ -28,6 +28,7 @@ app.use('/users', users);
 
 db.connect(function(err) {
   if (err) {
+    console.log(err);
     console.log('Unable to connect to MySQL.')
     process.exit(1)
   } else {
