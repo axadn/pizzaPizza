@@ -22,3 +22,46 @@
 | `id`                 | integer   | not null, primary key          |
 | `name`               | varchar 30| not null                       |
 | `price`              | decimal   | not null                       |
+
+# Redux Sample State Shape
+
+````js
+{
+  entities: {
+      toppings: {
+          pepperoni: {
+              name: "pepperoni",
+              price: 1.5
+          },
+          tomatoes: {
+              name: "tomatoes",
+              price: 1.45
+          },
+          anchovies: {
+              name: "anchovies",
+              price: 2
+          }
+      },
+      sizes: {
+          medium: {
+              name: "medium",
+              price: 15
+          },
+          large: {
+              name: "large",
+              price: 20
+          },
+          king: {
+              name: "king",
+              price: 24
+          }
+      }
+  },
+  session: {
+      current_user:{
+          username: "admin1",
+          isAdmin: "true"
+      } 
+  }
+}
+````
