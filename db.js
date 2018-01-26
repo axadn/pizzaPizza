@@ -22,23 +22,25 @@ exports.connect = function(done){
             state.pool.query('CREATE TABLE IF NOT EXISTS users('
                 + 'id INT NOT NULL AUTO_INCREMENT,'
                 + 'PRIMARY KEY(id),'
-                + 'name VARCHAR(30),'
-                + 'password VARCHAR(60)'
+                + 'username VARCHAR(30) NOT NULL,'
+                + 'password VARCHAR(60) NOT NULL'
+                + 'CONSTRAINT username_unique UNIQUE(username)'
                 +  ')'
             );
             state.pool.query('CREATE TABLE sizes IF NOT EXISTS sizes('
                 + 'id INT NOT NULL AUTO_INCREMENT',
                 + 'PRIMARY KEY(id)',
-                + 'size INT',
-                + 'name VARCHAR(30)'
-                + 'price DECIMAL(5,2)'
+                + 'name VARCHAR(30) NOT NULL'
+                + 'price DECIMAL(5,2) NOT NULL'
+                + 'CONSTRAINT name_unique UNIQUE(name)'
                 + ')'
             );
             state.pool.query('CREATE TABLE toppings IF NOT EXISTS toppings('
                 + 'id INT NOT NULL AUTO_INCREMENT'
                 + 'PRIMARY KEY(id)'
-                + 'name VARCHAR(30)'
-                + 'price DECIMAL(5,2)'
+                + 'name VARCHAR(30) NOT NULL'
+                + 'price DECIMAL(5,2) NOT NULL'
+                + 'CONSTRAINT name_unique UNIQUE(name)'
                 + ')'
             );
         }

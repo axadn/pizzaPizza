@@ -12,7 +12,6 @@
 | column name          | data type | details                        |
 |:---------------------|:---------:|:-------------------------------|
 | `id`                 | integer   | not null, primary key          |
-| `size`               | integer   | not null                       |
 | `price`              | decimal   | not null                       |
 | `name`               | varchar 30| not null                       |
 
