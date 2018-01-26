@@ -65,3 +65,33 @@
   }
 }
 ````
+# Routes
+
+## API Endpoints
+
+### `users`
++ `GET /api/users/:id` - returns the information for a user
++ `POST /api/users` - sign up
+
+### `session`
++ `POST /api/session` - signs in a user
++ `DELETE /api/session` - signs out a user
+
+### `toppings`
++ `POST /api/toppings` - create a topping (admin)
++ `DELETE /api/toppings/:id` - deletes a topping (admin)
++ `PUT /api/toppings/:id` - updates a topping's information (admin)
++ `GET /api/toppings/` - returns index of toppings
+
+### `sizes`
++ `POST /api/sizes` - create a new size (admin)
++ `GET /api/sizes` - returns index of sizes (admin)
++ `PUT /api/sizes/:id` - updates a size's information (admin)
++ `DELETE /api/sizes/:id` deletes a size
+---
+## Frontend Routes
++ `/login`
++ `/signup`
++ `/users/:userId` - user profile
++ `/admin` - admin dashboard
++ `/order` - order a pizza
