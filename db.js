@@ -13,33 +13,32 @@ exports.connect = function(done){
         host: 'localhost',
         user: 'root',
         password: 'password',
-        database: 'pizzaPizza'
     });
     state.pool.query('CREATE DATABASE IF NOT EXISTS pizzaPizza',
         function (error, results, fields) {
             if (error) throw error;
-            console.log('created database pizzaPizza');
             state.pool.query('CREATE TABLE IF NOT EXISTS users('
                 + 'id INT NOT NULL AUTO_INCREMENT,'
                 + 'PRIMARY KEY(id),'
-                + 'username VARCHAR(30) NOT NULL,'
-                + 'password VARCHAR(60) NOT NULL'
-                + 'CONSTRAINT username_unique UNIQUE(username)'
+                + 'username VARCHAR(30) NOT NULL UNIQUE,'
+                + 'password_digest VARCHAR(60) NOT NULL,'
+                + 'session_token VARCHAR NOT NULL UNIQUE,'
+                + 'is_admin BOOL NOT NULL'
                 +  ')'
             );
             state.pool.query('CREATE TABLE sizes IF NOT EXISTS sizes('
-                + 'id INT NOT NULL AUTO_INCREMENT',
-                + 'PRIMARY KEY(id)',
-                + 'name VARCHAR(30) NOT NULL'
-                + 'price DECIMAL(5,2) NOT NULL'
+                + 'id INT NOT NULL AUTO_INCREMENT,'
+                + 'PRIMARY KEY(id),'
+                + 'name VARCHAR(30) NOT NULL,'
+                + 'price DECIMAL(5,2) NOT NULL,'
                 + 'CONSTRAINT name_unique UNIQUE(name)'
                 + ')'
             );
             state.pool.query('CREATE TABLE toppings IF NOT EXISTS toppings('
-                + 'id INT NOT NULL AUTO_INCREMENT'
-                + 'PRIMARY KEY(id)'
-                + 'name VARCHAR(30) NOT NULL'
-                + 'price DECIMAL(5,2) NOT NULL'
+                + 'id INT NOT NULL AUTO_INCREMENT,'
+                + 'PRIMARY KEY(id),'
+                + 'name VARCHAR(30) NOT NULL,'
+                + 'price DECIMAL(5,2) NOT NULL,'
                 + 'CONSTRAINT name_unique UNIQUE(name)'
                 + ')'
             );
