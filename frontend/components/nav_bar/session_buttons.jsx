@@ -12,11 +12,11 @@ export default class SessionButtons extends React.Component{
         }else{
             return <div className="modal-open-buttons">
                 <div className="modal-open-button"
-                onClick={props.openLoginModal}>
+                onClick={this.props.openLoginModal} >
                     log in
                 </div>
                 <div className="modal-open-button"
-                onClick={props.openSignupModal}>
+                onClick={this.props.openSignupModal}>
                     sign up
                 </div>
             </div>
