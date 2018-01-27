@@ -1,15 +1,11 @@
 const db = require("./db");
 const User = require("./routes/api/user_utils");
 const SqlString = require('sqlstring');
+const DEFAULT_ADMIN = require("./defaultAdmin");
 db.connect(err=>{
     if(err) console.log(err);
 });
 
-
-const DEFAULT_ADMIN = {
-    username: "admin",
-    password: "password"
-}
 User.create(
     {
         username: DEFAULT_ADMIN.username,
