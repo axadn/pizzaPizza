@@ -49,7 +49,10 @@ router.post('/', function(req, res, next){
     paramsErrors(req.body.username, req.body.password, errors=>{
         if(errors.length ===0){
             User.create({username: req.body.username, password: req.body.password},
-                resultId=> res.json(resultId), next);
+                result=>{
+                    res.cookie("session_token", result.token);
+                    res.json({id: result.id});
+                },next);
         }else res.json({errors});
     }, next);
 });

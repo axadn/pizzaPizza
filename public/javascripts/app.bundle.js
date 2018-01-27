@@ -3554,7 +3554,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 document.addEventListener("DOMContentLoaded", function () {
     var root = document.getElementById("root");
     if (window.currentUser) {
-        _store2.default.dispatch((0, _session.receiveCurrentUser)(window.curentUser));
+        _store2.default.dispatch((0, _session.receiveCurrentUser)(window.currentUser));
     }
     _reactDom2.default.render(_react2.default.createElement(_root2.default, { store: _store2.default }), root);
 });

@@ -8,7 +8,7 @@
   <body>
     <script type="text/javascript">
       <%if(currentUser){%>
-        window.currentUser=<%=currentUser%>;
+        window.currentUser=<%-JSON.stringify(currentUser)%>;
       <%}%>
     </script>
     <h1><%= title %></h1>

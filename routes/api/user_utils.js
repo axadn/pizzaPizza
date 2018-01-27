@@ -12,7 +12,7 @@ module.exports.fromSessionToken = function fromSessionToken(token, done, onError
         (error, result, fields) =>{
             if(error){
                 OnError(error);
-            }else done(result);
+            }else done(result[0]);
         }
     );
 }
@@ -86,7 +86,7 @@ module.exports.create = function(params, done, onError){
                         onError(error);
                     } 
                     else{
-                        done({id: result.insertId});
+                        done({id: result.insertId, token});
                     }
                 }
             );

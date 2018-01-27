@@ -7,7 +7,7 @@ import {receiveCurrentUser} from "./actions/session";
 document.addEventListener("DOMContentLoaded", ()=>{
     const root = document.getElementById("root");
     if(window.currentUser){
-        store.dispatch(receiveCurrentUser(window.curentUser));
+        store.dispatch(receiveCurrentUser(window.currentUser));
     }
     ReactDOM.render(<Root store={store}/>, root);
 });
