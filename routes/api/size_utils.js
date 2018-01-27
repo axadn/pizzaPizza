@@ -47,3 +47,14 @@ module.exports.delete = function(id, done, onError){
         }
     );
 }
+
+module.exports.index = function (done, onError){
+    db.get().query(
+        "SELECT * from sizes",
+        (error, result, fields)=>{
+            if(error){
+                onError(error);
+            }else done(result);
+        }
+    );
+}

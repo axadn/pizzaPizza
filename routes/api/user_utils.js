@@ -19,7 +19,7 @@ module.exports.fromSessionToken = function fromSessionToken(token, done, onError
 
 module.exports.currentUser = function(req, done, onError){
     const token = req.cookies.session_token;
-    if(token) User.fromSessionToken(token, done, onError);
+    if(token) module.exports.fromSessionToken(token, done, onError);
     else done(null);
 };
 
