@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const async = require('async');
 const fs = require('fs');
-const dbConfig = require('dbConfig');
+const dbConfig = require('./dbConfig');
 const state = {
     pool: null
 };
@@ -36,6 +36,9 @@ exports.connect = function(done){
         password: dbConfig.password,
         database: dbConfig.database
     });
+    state.pool.on('error', function(err) {
+        console.log("[mysql error]",err);
+      });
     done();
 };
 
