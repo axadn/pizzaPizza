@@ -88,9 +88,9 @@ Pizza Pizza is a pizza ordering application built with a Node.js backend and a R
 
 ### `sizes`
 + `POST /api/sizes` - create a new size (admin)
-+ `GET /api/sizes` - returns index of sizes (admin)
++ `GET /api/sizes` - returns index of sizes 
 + `PUT /api/sizes/:id` - updates a size's information (admin)
-+ `DELETE /api/sizes/:id` deletes a size
++ `DELETE /api/sizes/:id` deletes a size (admin)
 ---
 ## Frontend Routes
 + `/login`
