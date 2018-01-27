@@ -13,7 +13,7 @@ module.exports = {
             Components: path.resolve(__dirname, 'frontend/components/'),
             Actions: path.resolve(__dirname, 'frontend/actions/'),
             Reducers: path.resolve(__dirname, 'frontend/reducers/'),
-            Utils: path.resolve(__dirname, 'frontend/utils/')
+            Utils: path.resolve(__dirname, 'frontend/utils/'),
         }
     },
     module: {

@@ -6,4 +6,5 @@ export const sizes = state=> state.entities.sizes;
 export const sizeById = (state, id) => state.entities.sizes[id];
 export const toppingById = (state, id) => state.entities.toppings[id];
 export const cartItemByIndex = (state, index) => state.entities.cart.pizzas[index];
-export const modal = state => state.modal;
+export const modal = state => state.modal.mode;
+export const modalErrors = state => state.modal.errors;

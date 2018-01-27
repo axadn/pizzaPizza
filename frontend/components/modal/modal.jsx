@@ -16,9 +16,18 @@ export default class m extends React.Component{
         this.props.closeModal();
     }
     render(){
+        const errors = [];
+        for(let i = 0; i < this.props.errors.length; ++i){
+            errors.push(
+                <li key={`modal-error-item${i}`}>{this.props.errors[i]}</li>
+            );
+        }
        return <Modal isOpen={this.props.isOpen}>
             <SessionFormContainer/>
             <button onClick={this.handleClose} className="modal-exit">cancel</button>
+            <ul className = "modal-errors">
+                {errors}                
+            </ul>
         </Modal>;
     }
 };

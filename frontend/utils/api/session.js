@@ -1,2 +1,4 @@
-export const post = (params, done) => axios.post("/session", params).then(res=>done(res));
-export const delete= (id, done) => axios.delete("/session", id).then(res=>done(res));
+import axios from "axios";
+
+export const post = (params) => axios.post("/api/session", params);
+export const del = (id) => axios.delete("/api/session", id);
