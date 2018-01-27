@@ -6,7 +6,7 @@ const AdminUtils = require('./admin_utils');
 const Toppings = require("./topping_utils");
 
 router.post("/", function(req,res,next){
-    AdminUtils.admin_route(req,res,
+    AdminUtils.adminRoute(req,res,
         authenticated =>{
             Toppings.create(req.params, success=>{
                 res.json("success");
@@ -29,7 +29,7 @@ router.get("/", function(req,res,next){
 });
 
 router.put("/:id", function(req, res, next){
-    AdminUtils.admin_route(req, res,
+    AdminUtils.adminRoute(req, res,
         authenticated=>{
             Toppings.update(req.params.id, req.body, success=>{
                 res.json("success");
@@ -38,7 +38,7 @@ router.put("/:id", function(req, res, next){
 });
 
 router.delete("/:id", function(req, res, next){
-    AdminUtils.admin_route(req, res,
+    AdminUtils.adminRoute(req, res,
         authenticated=>{
             Toppings.delete(req.params.id, success=>{
                 res.json("success");
