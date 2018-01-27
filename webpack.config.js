@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
      
 module.exports = {
-    entry: './frontend/app.js',
+    entry: './frontend/pizza_pizza.js',
     output: {
         path: path.resolve(__dirname, 'public/javascripts'),
         filename: 'app.bundle.js'
