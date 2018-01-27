@@ -13,7 +13,8 @@ router.get('/:id', function(req, res, next) {
                 next(error);
             }
             else if(results){
-                res.json({id: results[0].id, username: results[0].username})
+                res.json({id: results[0].id, username: results[0].username,
+                    is_admin: results[0].is_admin})
             }
             else{
                 res.status(404)
