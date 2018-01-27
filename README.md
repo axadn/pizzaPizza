@@ -71,8 +71,8 @@ Pizza Pizza is a pizza ordering application built with a Node.js backend and a R
       },
       cart:{
           pizzas:[
-            {size: "medium", toppings: [2]},
-            {size: "king", toppings: [3, 4]}            
+            {size: 1, toppings: [2]},
+            {size: 3, toppings: [3, 4]}            
           ]
       }
   }
