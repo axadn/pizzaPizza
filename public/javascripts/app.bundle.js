@@ -25765,9 +25765,11 @@ var Order = function (_React$Component) {
             sizes: [],
             toppings: [],
             selectedSize: null,
-            selectedToppings: []
+            selectedToppings: {}
         };
         _this.handleSizeSelect = _this.handleSizeSelect.bind(_this);
+        _this.handleToppingSelect = _this.handleToppingSelect.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
 
@@ -25791,6 +25793,23 @@ var Order = function (_React$Component) {
         value: function handleSizeSelect(e) {
             e.stopPropagation();
             this.setState({ selectedSize: e.target.value });
+        }
+    }, {
+        key: "handleToppingSelect",
+        value: function handleToppingSelect(e) {
+            e.stopPropagation();
+            var selectedToppings = this.state.selectedToppings;
+            if (e.target.checked) {
+                selectedToppings[e.target.value] = true;
+            } else {
+                delete selectedToppings[e.target.value];
+            }
+            this.setState({ selectedToppings: selectedToppings });
+        }
+    }, {
+        key: "handleSubmit",
+        value: function handleSubmit(e) {
+            this.props.addToCart({ size: this.state.selectedSize, toppings: this.state.selectedToppings });
         }
     }, {
         key: "sortToppings",
@@ -25818,16 +25837,107 @@ var Order = function (_React$Component) {
         key: "generateSizeSelect",
         value: function generateSizeSelect() {
             return _react2.default.createElement(
-                "select",
-                { name: "size", value: this.state.selectedSize || "", onChange: this.handleSizeSelect },
-                this.state.sizes.map(function (size, idx) {
-                    return _react2.default.createElement(
+                "fieldSet",
+                { className: "size-select-fieldSet" },
+                _react2.default.createElement(
+                    "legend",
+                    null,
+                    "Choose a size"
+                ),
+                _react2.default.createElement(
+                    "select",
+                    { name: "size", value: this.state.selectedSize || "", onChange: this.handleSizeSelect },
+                    _react2.default.createElement(
                         "option",
-                        { key: "sizeSelect" + idx,
-                            name: size.name, value: size.id },
-                        size.name
-                    );
-                })
+                        { value: "", disabled: true, hidden: true },
+                        "Please Choose..."
+                    ),
+                    this.state.sizes.map(function (size, idx) {
+                        return _react2.default.createElement(
+                            "option",
+                            { key: "sizeSelect" + idx,
+                                name: size.name, value: size.id },
+                            size.name
+                        );
+                    })
+                ),
+                _react2.default.createElement(
+                    "a",
+                    null,
+                    this.state.selectedSize ? this.formattedSizePrice() : ""
+                )
+            );
+        }
+    }, {
+        key: "renderCheckout",
+        value: function renderCheckout() {
+            var _this2 = this;
+
+            if (this.state.selectedSize) {
+                var total = this.props.sizes[this.state.selectedSize].price;
+                Object.keys(this.state.selectedToppings).forEach(function (id) {
+                    total += _this2.props.toppings[id].price;
+                });
+                return _react2.default.createElement(
+                    "div",
+                    { className: "pizza-checkout-container" },
+                    _react2.default.createElement(
+                        "a",
+                        null,
+                        "Total: ",
+                        (0, _string.formatPrice)(total)
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: this.handleSubmit },
+                        "Add To Cart"
+                    )
+                );
+            } else {
+                return _react2.default.createElement(
+                    "a",
+                    null,
+                    "Please Select a Size"
+                );
+            }
+        }
+    }, {
+        key: "generateToppingsSelect",
+        value: function generateToppingsSelect() {
+            var _this3 = this;
+
+            var toppingBoxes = this.state.toppings.map(function (topping, idx) {
+                return _react2.default.createElement(
+                    "div",
+                    { key: "toppingBox" + topping.id, className: "pizza-customizaton-form_group" },
+                    _react2.default.createElement("input", { type: "checkBox", id: "toppingBox" + topping.id,
+                        checked: !!_this3.state.selectedToppings[topping.id],
+                        onChange: _this3.handleToppingSelect, value: topping.id }),
+                    _react2.default.createElement(
+                        "label",
+                        { htmlFor: "toppingBox" + topping.id },
+                        topping.name,
+                        _react2.default.createElement(
+                            "a",
+                            null,
+                            (0, _string.formatPrice)(topping.price)
+                        )
+                    )
+                );
+            });
+            return _react2.default.createElement(
+                "div",
+                { className: "pizza-customization-form_group" },
+                _react2.default.createElement(
+                    "fieldSet",
+                    { className: "toppings-select-fieldSet" },
+                    _react2.default.createElement(
+                        "legend",
+                        null,
+                        "Choose your Toppings"
+                    ),
+                    toppingBoxes
+                )
             );
         }
     }, {
@@ -25839,22 +25949,10 @@ var Order = function (_React$Component) {
                 _react2.default.createElement(
                     "form",
                     { className: "pizza-customization-form" },
-                    _react2.default.createElement(
-                        "div",
-                        { className: "pizza-customization-form_group" },
-                        _react2.default.createElement(
-                            "label",
-                            { htmlFor: "size" },
-                            "size"
-                        ),
-                        this.generateSizeSelect(),
-                        _react2.default.createElement(
-                            "a",
-                            null,
-                            this.state.selectedSize ? this.formattedSizePrice() : ""
-                        )
-                    )
-                )
+                    this.generateSizeSelect(),
+                    this.generateToppingsSelect()
+                ),
+                this.renderCheckout()
             );
         }
     }]);
@@ -29630,8 +29728,9 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
-        addPizza: function addPizza(pizza) {
-            return dispatch((0, _cart.addPizza)(pizza));
+        addToCart: function addToCart(pizza) {
+            dispatch((0, _cart.addPizza)(pizza));
+            window.location = "/#/cart";
         },
         getToppings: function getToppings() {
             return dispatch((0, _toppings.getToppings)(function (toppings) {

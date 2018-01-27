@@ -12,7 +12,10 @@ const mapStateToProps = state =>({
 });
 
 const mapDispatchToProps = dispatch => ({
-    addPizza: pizza => dispatch(addPizza(pizza)),
+    addToCart: pizza =>{
+        dispatch(addPizza(pizza));
+        window.location ="/#/cart";
+    },
     getToppings: () => dispatch(getToppings(toppings=>dispatch(receiveToppings(toppings)))),
     getSizes: () => dispatch(getSizes(sizes=>dispatch(receiveSizes(sizes))))
 });
