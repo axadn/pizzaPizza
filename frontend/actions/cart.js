@@ -13,5 +13,5 @@ export const removePizza = index =>({
 });
 
 export const emptyCart = () =>({
-    type: EMPTY_CART;
+    type: EMPTY_CART
 })

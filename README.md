@@ -108,3 +108,36 @@ Pizza Pizza is a pizza ordering application built with a Node.js backend and a R
 + `/users/:userId` - user profile
 + `/admin` - admin dashboard
 + `/order` - order a pizza
+
+## Functional Component Hierarchy
+* Root
+  * App
+    * NavBar
+    * Main Content
+
+### NavBar
+  * Nav Links
+  * Components: 
+    * SessionButtonsContainer + SessionButtons
+      * store: _session.current\_user_
+
+### Main Content
+  * hash router
+
+#### **Note** : All other components are nested within Main Content
+
+### Order
+  * PizzaDisplayContainer + PizzaDisplay
+  * PizzaOptionsContainer + PizzaOptions 
+
+### Cart
+  * CartInforContainer + CartInfo 
+
+### Profile
+  * Protected Route
+  * UserShowContainer + UserShow
+    * Route: /#/users/:id
+    * store: _session.current\_user_ 
+
+### Dashboard
+  * Protected Admin Route
