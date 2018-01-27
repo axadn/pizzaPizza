@@ -1,2 +1,2 @@
 import axios from "axios";
-export const get = ()=> axiso.get("/api/sizes");
+export const get = ()=> axios.get("/api/sizes");

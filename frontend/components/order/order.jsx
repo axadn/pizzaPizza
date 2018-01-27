@@ -1,28 +1,24 @@
 import React from "react";
-
-export default props =>(
-    <div className= "order-component">
-        
-    </div>
-);
+import {formatPrice} from "Utils/string";
 
 export default class Order extends React.Component{
     constructor(props){
         super(props);
-    }
-
-    componentWillMount(){
         this.state = {
             sizes: [],
             toppings: [],
             selectedSize: null,
             selectedToppings: []
         };
+        this.handleSizeSelect = this.handleSizeSelect.bind(this);
+    }
+
+    componentWillMount(){
         this.props.getSizes();
         this.props.getToppings();
     }
     sortSizes(sizes){
-        Object.keys(sizes).map(id=>sizes[id]).sort((sizeA, sizeB)=>
+        return Object.keys(sizes).map(id=>sizes[id]).sort((sizeA, sizeB)=>
             (sizeA.price < sizeB.price)? -1 : 1 
         );
     }
@@ -31,7 +27,7 @@ export default class Order extends React.Component{
         this.setState({selectedSize: e.target.value});
     }
     sortToppings(toppings){
-        Object.keys(toppings).map(id=>toppings[id]).sort((toppingA, toppingB)=>
+        return Object.keys(toppings).map(id=>toppings[id]).sort((toppingA, toppingB)=>
             (toppingA.name < toppingB.name)? -1 : 1
         );
     }
@@ -43,19 +39,30 @@ export default class Order extends React.Component{
         });
     }
     
-    render(){
+    formattedSizePrice(){
+        return formatPrice(this.props.sizes[this.state.selectedSize].price);
+    }
 
+    generateSizeSelect(){
+        return <select name="size" value={this.state.selectedSize || ""} onChange={this.handleSizeSelect}>
+            {this.state.sizes.map((size, idx)=>
+                <option key={`sizeSelect${idx}`}
+                    name={size.name} value={size.id}>
+                    {size.name}
+                </option>
+            )}      
+        </select>
+    }
+
+    render(){
         return(
             <div className= "order-component">
                 <form className="pizza-customization-form">
-                    <select name="size">
-                        {this.state.sizes.forEach((size, idx)=>
-                            <option key={`sizeSelect${idx}`} {(this.state.selectedSize === size.id ? "selected": "")}
-                             name={size.name} value={size.id}>
-                                {size.name}
-                            </option>
-                        )}
-                    </select>
+                    <div className="pizza-customization-form_group"> 
+                        <label htmlFor="size">size</label>
+                        {this.generateSizeSelect()}
+                        <a>{this.state.selectedSize? this.formattedSizePrice() : ""}</a>
+                    </div>
                 </form>    
             </div>
         );

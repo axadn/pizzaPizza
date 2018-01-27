@@ -22704,9 +22704,9 @@ var _reactRouterDom = __webpack_require__(20);
 
 var _protected_routes = __webpack_require__(117);
 
-var _order = __webpack_require__(118);
+var _order_container = __webpack_require__(184);
 
-var _order2 = _interopRequireDefault(_order);
+var _order_container2 = _interopRequireDefault(_order_container);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22714,7 +22714,7 @@ exports.default = function (props) {
     return _react2.default.createElement(
         "div",
         { className: "main-content" },
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", component: _order2.default })
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", component: _order_container2.default })
     );
 };
 
@@ -25728,10 +25728,141 @@ var mapStateToProps = function mapStateToProps(state) {
 
 /***/ }),
 /* 118 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-throw new Error("Module build failed: SyntaxError: Unexpected token, expected ... (53:62)\n\n\u001b[0m \u001b[90m 51 | \u001b[39m                    \u001b[33m<\u001b[39m\u001b[33mselect\u001b[39m name\u001b[33m=\u001b[39m\u001b[32m\"size\"\u001b[39m\u001b[33m>\u001b[39m\n \u001b[90m 52 | \u001b[39m                        {\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mstate\u001b[33m.\u001b[39msizes\u001b[33m.\u001b[39mforEach((size\u001b[33m,\u001b[39m idx)\u001b[33m=>\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 53 | \u001b[39m                            \u001b[33m<\u001b[39m\u001b[33moption\u001b[39m key\u001b[33m=\u001b[39m{\u001b[32m`sizeSelect${idx}`\u001b[39m} {(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mstate\u001b[33m.\u001b[39mselectedSize \u001b[33m===\u001b[39m size\u001b[33m.\u001b[39mid \u001b[33m?\u001b[39m \u001b[32m\"selected\"\u001b[39m\u001b[33m:\u001b[39m \u001b[32m\"\"\u001b[39m)}\n \u001b[90m    | \u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 54 | \u001b[39m                             name\u001b[33m=\u001b[39m{size\u001b[33m.\u001b[39mname} value\u001b[33m=\u001b[39m{size\u001b[33m.\u001b[39mid}\u001b[33m>\u001b[39m\n \u001b[90m 55 | \u001b[39m                                {size\u001b[33m.\u001b[39mname}\n \u001b[90m 56 | \u001b[39m                            \u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33moption\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n");
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _string = __webpack_require__(185);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Order = function (_React$Component) {
+    _inherits(Order, _React$Component);
+
+    function Order(props) {
+        _classCallCheck(this, Order);
+
+        var _this = _possibleConstructorReturn(this, (Order.__proto__ || Object.getPrototypeOf(Order)).call(this, props));
+
+        _this.state = {
+            sizes: [],
+            toppings: [],
+            selectedSize: null,
+            selectedToppings: []
+        };
+        _this.handleSizeSelect = _this.handleSizeSelect.bind(_this);
+        return _this;
+    }
+
+    _createClass(Order, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {
+            this.props.getSizes();
+            this.props.getToppings();
+        }
+    }, {
+        key: "sortSizes",
+        value: function sortSizes(sizes) {
+            return Object.keys(sizes).map(function (id) {
+                return sizes[id];
+            }).sort(function (sizeA, sizeB) {
+                return sizeA.price < sizeB.price ? -1 : 1;
+            });
+        }
+    }, {
+        key: "handleSizeSelect",
+        value: function handleSizeSelect(e) {
+            e.stopPropagation();
+            this.setState({ selectedSize: e.target.value });
+        }
+    }, {
+        key: "sortToppings",
+        value: function sortToppings(toppings) {
+            return Object.keys(toppings).map(function (id) {
+                return toppings[id];
+            }).sort(function (toppingA, toppingB) {
+                return toppingA.name < toppingB.name ? -1 : 1;
+            });
+        }
+    }, {
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(newProps) {
+            this.setState({
+                sizes: this.sortSizes(newProps.sizes),
+                toppings: this.sortToppings(newProps.toppings)
+            });
+        }
+    }, {
+        key: "formattedSizePrice",
+        value: function formattedSizePrice() {
+            return (0, _string.formatPrice)(this.props.sizes[this.state.selectedSize].price);
+        }
+    }, {
+        key: "generateSizeSelect",
+        value: function generateSizeSelect() {
+            return _react2.default.createElement(
+                "select",
+                { name: "size", value: this.state.selectedSize || "", onChange: this.handleSizeSelect },
+                this.state.sizes.map(function (size, idx) {
+                    return _react2.default.createElement(
+                        "option",
+                        { key: "sizeSelect" + idx,
+                            name: size.name, value: size.id },
+                        size.name
+                    );
+                })
+            );
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "order-component" },
+                _react2.default.createElement(
+                    "form",
+                    { className: "pizza-customization-form" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "pizza-customization-form_group" },
+                        _react2.default.createElement(
+                            "label",
+                            { htmlFor: "size" },
+                            "size"
+                        ),
+                        this.generateSizeSelect(),
+                        _react2.default.createElement(
+                            "a",
+                            null,
+                            this.state.selectedSize ? this.formattedSizePrice() : ""
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Order;
+}(_react2.default.Component);
+
+exports.default = Order;
 
 /***/ }),
 /* 119 */
@@ -29434,7 +29565,7 @@ var _axios2 = _interopRequireDefault(_axios);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var get = exports.get = function get() {
-  return axiso.get("/api/sizes");
+  return _axios2.default.get("/api/sizes");
 };
 
 /***/ }),
@@ -29456,7 +29587,85 @@ var _axios2 = _interopRequireDefault(_axios);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var get = exports.get = function get() {
-  return axiso.get("/api/toppings");
+  return _axios2.default.get("/api/toppings");
+};
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _selectors = __webpack_require__(49);
+
+var _order = __webpack_require__(118);
+
+var _order2 = _interopRequireDefault(_order);
+
+var _cart = __webpack_require__(133);
+
+var _toppings = __webpack_require__(129);
+
+var _sizes = __webpack_require__(127);
+
+var _reactRedux = __webpack_require__(16);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        toppings: (0, _selectors.toppings)(state),
+        sizes: (0, _selectors.sizes)(state)
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        addPizza: function addPizza(pizza) {
+            return dispatch((0, _cart.addPizza)(pizza));
+        },
+        getToppings: function getToppings() {
+            return dispatch((0, _toppings.getToppings)(function (toppings) {
+                return dispatch((0, _toppings.receiveToppings)(toppings));
+            }));
+        },
+        getSizes: function getSizes() {
+            return dispatch((0, _sizes.getSizes)(function (sizes) {
+                return dispatch((0, _sizes.receiveSizes)(sizes));
+            }));
+        }
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_order2.default);
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var formatPrice = exports.formatPrice = function formatPrice(price) {
+    var str = price.toString().split(".");
+    var wholePart = str[0];
+    var decimalPart = str[1] || "00";
+    while (decimalPart.length < 2) {
+        decimalPart += "0";
+    }
+    return "$" + wholePart + "." + decimalPart;
 };
 
 /***/ })
