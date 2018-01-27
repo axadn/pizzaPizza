@@ -26037,7 +26037,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getSizes = exports.addSize = exports.removeSize = exports.receiveSizes = exports.ADD_SIZE = exports.REMOVE_SIZE = exports.RECEIVE_SIZES = undefined;
 
-var _sizes = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"Utils/api/sizes\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+var _sizes = __webpack_require__(182);
 
 var RECEIVE_SIZES = exports.RECEIVE_SIZES = "RECEIVE_SIZES";
 var REMOVE_SIZE = exports.REMOVE_SIZE = "REMOVE_SIZE";
@@ -26121,7 +26121,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getToppings = exports.addTopping = exports.removeTopping = exports.receiveToppings = exports.ADD_TOPPING = exports.REMOVE_TOPPING = exports.RECEIVE_TOPPINGS = undefined;
 
-var _toppings = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"Utils/api/toppings\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+var _toppings = __webpack_require__(183);
 
 var RECEIVE_TOPPINGS = exports.RECEIVE_TOPPINGS = "RECEIVE_TOPPINGS";
 var REMOVE_TOPPING = exports.REMOVE_TOPPING = "REMOVE_TOPPING";
@@ -29413,6 +29413,50 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var post = exports.post = function post(params) {
   return _axios2.default.post("/api/users", params);
+};
+
+/***/ }),
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.get = undefined;
+
+var _axios = __webpack_require__(161);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var get = exports.get = function get() {
+  return axiso.get("/api/sizes");
+};
+
+/***/ }),
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.get = undefined;
+
+var _axios = __webpack_require__(161);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var get = exports.get = function get() {
+  return axiso.get("/api/toppings");
 };
 
 /***/ })
