@@ -3,5 +3,5 @@ import sizes from "./sizes";
 import toppings from "./toppings";
 
 export default combineReducers({
-
+    sizes, toppings
 });
