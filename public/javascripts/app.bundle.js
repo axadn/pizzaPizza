@@ -3517,8 +3517,8 @@ var postSession = exports.postSession = function postSession(params, done, error
 
 var deleteSession = exports.deleteSession = function deleteSession(done) {
     return function (dispatch) {
-        _session.del.then(function (result) {
-            done(result);
+        (0, _session.del)().then(function (result) {
+            if (done) done(result);
             dispatch(deleteCurrentUser());
         });
     };
@@ -26011,6 +26011,8 @@ var _selectors = __webpack_require__(49);
 
 var _modal = __webpack_require__(50);
 
+var _session = __webpack_require__(51);
+
 var _reactRedux = __webpack_require__(16);
 
 var _session_buttons = __webpack_require__(121);
@@ -26032,6 +26034,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         },
         openSignupModal: function openSignupModal() {
             return dispatch((0, _modal.openSignupModal)());
+        },
+        logout: function logout() {
+            return dispatch((0, _session.deleteSession)());
         }
     };
 };
@@ -26082,6 +26087,11 @@ var SessionButtons = function (_React$Component) {
                         "a",
                         null,
                         this.props.currentUser.username
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: this.props.logout },
+                        "log out"
                     )
                 );
             } else {
@@ -26089,13 +26099,13 @@ var SessionButtons = function (_React$Component) {
                     "div",
                     { className: "modal-open-buttons" },
                     _react2.default.createElement(
-                        "div",
+                        "button",
                         { className: "modal-open-button",
                             onClick: this.props.openLoginModal },
                         "log in"
                     ),
                     _react2.default.createElement(
-                        "div",
+                        "button",
                         { className: "modal-open-button",
                             onClick: this.props.openSignupModal },
                         "sign up"
@@ -28026,8 +28036,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var post = exports.post = function post(params) {
   return _axios2.default.post("/api/session", params);
 };
-var del = exports.del = function del(id) {
-  return _axios2.default.delete("/api/session", id);
+var del = exports.del = function del() {
+  return _axios2.default.delete("/api/session");
 };
 
 /***/ }),

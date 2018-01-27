@@ -5,7 +5,14 @@ const User = require("./api/user_utils");
 router.get('/', function(req, res, next) {
   User.currentUser(req, user=>{
     debugger;
-    res.render('index', { title: 'Pizza Pizza', currentUser: User.renderUser(user)});
+    let renderedUser;
+    if(user){
+      renderedUser = User.renderUser(user);
+    }
+    else{
+      renderedUser = "";
+    }
+    res.render('index', { title: 'Pizza Pizza', currentUser: renderedUser });
   },next);
 });
 

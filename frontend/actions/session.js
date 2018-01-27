@@ -25,9 +25,9 @@ export const postSession = (params, done, error) => dispatch =>{
 }
 
 export const deleteSession = done => dispatch =>{
-    del.then(
+    del().then(
         result=>{
-            done(result);
+            if(done) done(result);
             dispatch(deleteCurrentUser());
         }
     );
