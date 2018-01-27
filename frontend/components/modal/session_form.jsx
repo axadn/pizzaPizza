@@ -11,26 +11,31 @@ export default class SessionForm extends React.Component{
         this.handleSumbit = this.handleSumbit.bind(this);
     }
     handleChange(key){
-        return e=>{
+        return (e=>{
             e.stopPropagation();
             e.preventDefault();
-            this.setState({[key]: e.value});
-        }
+            this.setState({[key]: e.target.value});
+        }).bind(this);
     }
     handleSumbit(e){
         e.stopPropagation();
         e.preventDefault();
-        this.props.post(this.state);
+        if(this.props.mode === "login"){
+            this.props.postSession(this.state);
+        }
+        else{
+            this.props.postUser(this.state);
+        }
     }
     render(){
-        return <form className="session-form" onSubmit={this.handleSumbit}  >
+        return <form className="session-form" onSubmit={this.handleSumbit}>
             <div className="session-form_group">
                 <label htmlFor="username">username</label>
-                <input type="text" name="username"/>
+                <input type="text" name="username" onChange={this.handleChange("username")}/>
             </div>
             <div className="session-form_group">
                 <label htmlFor="password">password</label>
-                <input type="password" name="password"/>
+                <input type="password" name="password" onChange={this.handleChange("password")}/>
             </div>
             <button type="submit">submit</button>
         </form>

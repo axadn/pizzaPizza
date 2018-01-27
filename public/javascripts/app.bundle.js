@@ -27612,19 +27612,34 @@ var _session_form2 = _interopRequireDefault(_session_form);
 
 var _session = __webpack_require__(51);
 
+var _user = __webpack_require__(180);
+
 var _modal = __webpack_require__(50);
+
+var _session2 = __webpack_require__(51);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(state) {
-    return {};
+    return {
+        mode: (0, _selectors.modal)(state)
+    };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
-        post: function post(params) {
-            return dispatch((0, _session.postSession)(params, function () {
-                return dispatch((0, _modal.closeModal)());
+        postSession: function postSession(params) {
+            return dispatch((0, _session.postSession)(params, function (data) {
+                dispatch((0, _session2.receiveCurrentUser)(data));
+                dispatch((0, _modal.closeModal)());
+            }, function (errors) {
+                return dispatch((0, _modal.receiveModalErrors)(errors));
+            }));
+        },
+        postUser: function postUser(params) {
+            return dispatch((0, _user.postUser)(params, function (data) {
+                dispatch((0, _session2.receiveCurrentUser)({ username: params.username, id: data.id, is_admin: false }));
+                dispatch((0, _modal.closeModal)());
             }, function (errors) {
                 return dispatch((0, _modal.receiveModalErrors)(errors));
             }));
@@ -27686,15 +27701,19 @@ var SessionForm = function (_React$Component) {
             return function (e) {
                 e.stopPropagation();
                 e.preventDefault();
-                _this2.setState(_defineProperty({}, key, e.value));
-            };
+                _this2.setState(_defineProperty({}, key, e.target.value));
+            }.bind(this);
         }
     }, {
         key: "handleSumbit",
         value: function handleSumbit(e) {
             e.stopPropagation();
             e.preventDefault();
-            this.props.post(this.state);
+            if (this.props.mode === "login") {
+                this.props.postSession(this.state);
+            } else {
+                this.props.postUser(this.state);
+            }
         }
     }, {
         key: "render",
@@ -27710,7 +27729,7 @@ var SessionForm = function (_React$Component) {
                         { htmlFor: "username" },
                         "username"
                     ),
-                    _react2.default.createElement("input", { type: "text", name: "username" })
+                    _react2.default.createElement("input", { type: "text", name: "username", onChange: this.handleChange("username") })
                 ),
                 _react2.default.createElement(
                     "div",
@@ -27720,7 +27739,7 @@ var SessionForm = function (_React$Component) {
                         { htmlFor: "password" },
                         "password"
                     ),
-                    _react2.default.createElement("input", { type: "password", name: "password" })
+                    _react2.default.createElement("input", { type: "password", name: "password", onChange: this.handleChange("password") })
                 ),
                 _react2.default.createElement(
                     "button",
@@ -29329,6 +29348,56 @@ module.exports = function spread(callback) {
   };
 };
 
+
+/***/ }),
+/* 180 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.postUser = undefined;
+
+var _users = __webpack_require__(181);
+
+var postUser = exports.postUser = function postUser(params, done, error) {
+    return function (dispatch) {
+        (0, _users.post)(params).then(function (_ref) {
+            var data = _ref.data;
+
+            if (data.errors) {
+                error(data.errors);
+            } else {
+                done(data);
+            }
+        });
+    };
+};
+
+/***/ }),
+/* 181 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.post = undefined;
+
+var _axios = __webpack_require__(161);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var post = exports.post = function post(params) {
+  return _axios2.default.post("/api/users", params);
+};
 
 /***/ })
 /******/ ]);
