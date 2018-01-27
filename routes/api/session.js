@@ -33,7 +33,7 @@ router.post("/", function(req, res, next){
 }); 
 
 function logout(user, res, next){
-    User.resetSessionToken(user, success=>{
+    User.resetSessionToken(user.id, success=>{
         res.clearCookie("session_token");
         res.json("success");
     }, next);
