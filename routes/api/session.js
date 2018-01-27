@@ -14,8 +14,7 @@ function login(user, password, res, next){
                 User.resetSessionToken(user.id,
                     token=>{
                         res.cookie("session_token", token);
-                        res.json({id: user.id, username: user.username,
-                            is_admin: user.is_admin});
+                        res.json(User.renderUser(user));
                     }, next
                 );
             }

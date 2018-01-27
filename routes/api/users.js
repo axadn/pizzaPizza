@@ -26,7 +26,7 @@ router.get('/:id', function(req, res, next) {
 function paramsErrors(username, password, done, onError){
     const errors = [];
     User.fromUsername(
-        req.body.username,
+        username,
         user =>{
             if(user){
                 errors.push("username is taken");
