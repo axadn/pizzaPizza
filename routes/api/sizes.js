@@ -5,8 +5,6 @@ const SqlString = require('sqlstring');
 const AdminUtils = require('./admin_utils');
 const Sizes = require("./size_utils");
 
-module.exports = router;
-
 router.post("/", function(req,res,next){
     AdminUtils.admin_route(req,res,
         authenticated =>{
@@ -47,3 +45,5 @@ router.delete("/:id", function(req, res, next){
             }, next);
     }, next);
 });
+
+module.exports = router;
