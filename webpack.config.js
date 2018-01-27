@@ -7,6 +7,15 @@ module.exports = {
         path: path.resolve(__dirname, 'public/javascripts'),
         filename: 'app.bundle.js'
     },
+    resolve: {
+        extensions: ['.js', '.jsx', '*'],
+        alias: {
+            Components: path.resolve(__dirname, 'frontend/components/'),
+            Actions: path.resolve(__dirname, 'frontend/actions/'),
+            Reducers: path.resolve(__dirname, 'frontend/actions/'),
+            Utils: path.resolve(__dirname, 'frontend/utils/')
+        }
+    },
     module: {
         loaders: [
             {

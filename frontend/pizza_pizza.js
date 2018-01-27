@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Root from "./components/root";
-import configureStore from "./store/store";
+import configureStore from "./store";
 import {receiveCurrentUser} from "./actions/session";
 
 document.addEventListener("DOMContentLoaded", ()=>{
