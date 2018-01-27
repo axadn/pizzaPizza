@@ -1,19 +1,6 @@
 const db = require("../../db");
 const SqlString = require('sqlstring');
 
-module.exports.fromName = function(name, done, onError){
-    db.get().query(
-        SqlString.format('SELECT * FROM toppings WHERE name = ?', [name]),
-        (error, result, fields)=>{
-            if(error){
-                onError(error);
-            } else if(result){
-                done(result);
-            }else done([]);
-        }
-    );
-}
-
 module.exports.update = function(id, params, done, onError){
     db.get().query(
         SqlString.format('UPDATE toppings SET name = ?, price = ? WHERE id = ?',

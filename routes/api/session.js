@@ -11,7 +11,7 @@ function login(user, password, res, next){
     User.isPassword(password, user.password_digest,
         validLogin=>{
             if(validLogin){
-                User.resetSessionToken(user,
+                User.resetSessionToken(user.id,
                     token=>{
                         res.cookie("session_token", token);
                         res.json({id: user.id, username: user.username,
@@ -26,8 +26,8 @@ function login(user, password, res, next){
 }
 
 router.post("/", function(req, res, next){
-    User.fromUsername(req.params.username, user=>{
-        if(user) login(user, req.params.password, res, next);
+    User.fromUsername(req.body.username, user=>{
+        if(user) login(user, req.body.password, res, next);
         else res.json({errors:["invalid username or password"]});
     }, next);
 }); 

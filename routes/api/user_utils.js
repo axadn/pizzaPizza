@@ -20,14 +20,14 @@ module.exports.fromSessionToken = function fromSessionToken(token, done, onError
 module.exports.currentUser = function(req, done, onError){
     const token = req.cookies.session_token;
     if(token) User.fromSessionToken(token, done, onError);
-    else return null;
+    else done(null);
 };
 
 module.exports.setSessionToken = function (id, token, done, onError){
     Session.generateSessionToken(token=>{
         db.get().query(
             SqlString.format("UPDATE users SET session_token = ? WHERE id = ?",
-                [token,user.id]),
+                [token, id]),
             (error, result, fields)=>{
                 if(error){
                     onError(error);
@@ -40,9 +40,9 @@ module.exports.setSessionToken = function (id, token, done, onError){
     });
 };
 
-module.exports.resetSessionToken = function resetSessionToken(user, done, onError){
+module.exports.resetSessionToken = function resetSessionToken(id, done, onError){
     Session.generateSessionToken(token=>{
-        setSessionToken(user, token, 
+        module.exports.setSessionToken(id, token, 
             success=>{
                 done(token);
             }, onError)
@@ -54,7 +54,7 @@ module.exports.fromUsername = function(username, done, onError){
         (error, result, fields)=>{
             if(error){
                 onError(error);
-            } else done(result);
+            } else done(result[0]);
         }
     );
 }

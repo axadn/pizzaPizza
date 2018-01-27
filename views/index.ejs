@@ -5,6 +5,11 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <script type="text/javascript">
+      <%if(currentUser){%>
+        window.currentUser=<%=currentUser%>;
+      <%}%>
+    </script>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
   </body>

@@ -12,7 +12,7 @@ router.post("/", function(req,res,next){
                 res.json("success");
             },next);
         }
-    ,next);
+    , next);
 });
 
 router.get("/", function(req,res,next){
