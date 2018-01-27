@@ -94,4 +94,4 @@ module.exports.create = function(params, done, onError){
     }, onError);
 }
 
-module.exports.renderUser = ({id, username})=>({id, username});
+module.exports.renderUser = ({id, username, is_admin})=>({id, username, is_admin});
