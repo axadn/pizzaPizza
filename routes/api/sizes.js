@@ -19,7 +19,7 @@ router.get("/", function(req,res,next){
     Sizes.index(sizes=>{
         const index = {};
         sizes.forEach(size=>{
-            index[size.id] = Size.renderSize(size);
+            index[size.id] = Sizes.renderSize(size);
         });
         res.json(index);
     }, next);
@@ -42,15 +42,5 @@ router.delete("/:id", function(req, res, next){
             }, next);
     }, next);
 });
-
-module.exports.index = function (done, onError){
-    db.get().query(
-        "SELECT * from sizes",
-        (error, result, fields)=>{
-            if(error) onError(error);
-            else done(result);
-        }
-    );
-}
 
 module.exports = router;

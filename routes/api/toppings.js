@@ -18,11 +18,8 @@ router.post("/", function(req,res,next){
 router.get("/", function(req,res,next){
     Toppings.index(toppings=>{
         const index = {};
-        toppings.forEach(size=>{
-            index[size.name] ={
-                name: size.name,
-                price: size.price
-            };
+        toppings.forEach(topping=>{
+            index[topping.id] = Toppings.renderTopping(topping);
         });
         res.json(index);
     }, next);
