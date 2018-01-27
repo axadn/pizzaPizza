@@ -13,8 +13,7 @@ router.get('/:id', function(req, res, next) {
                 next(error);
             }
             else if(results){
-                res.json({id: results[0].id, username: results[0].username,
-                    is_admin: results[0].is_admin})
+                res.json(User.renderUser(results[0]));
             }
             else{
                 res.status(404);
@@ -50,7 +49,7 @@ router.post('/', function(req, res, next){
     paramsErrors(req.body.username, req.body.password, errors=>{
         if(errors.length ===0){
             User.create({username: req.body.username, password: req.body.password},
-                success=> res.json("success"), next);
+                resultId=> res.json(resultId), next);
         }else res.json({errors});
     }, next);
 });

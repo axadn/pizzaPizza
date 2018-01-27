@@ -81,15 +81,17 @@ module.exports.create = function(params, done, onError){
             db.get().query(
                 SqlString.format("INSERT INTO users (username, password_digest, session_token, is_admin)" 
                 + "VALUES(?, ?, ?, ?)",[params.username, digest, token, false]),
-                (error, results, fields)=>{
+                (error, result, fields)=>{
                     if(error){
                         onError(error);
                     } 
                     else{
-                        done(results);
+                        done({id: result.insertId});
                     }
                 }
             );
         }, onError); 
     }, onError);
 }
+
+module.exports.renderUser = ({id, username})=>({id, username});

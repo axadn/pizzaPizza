@@ -8,8 +8,8 @@ const Sizes = require("./size_utils");
 router.post("/", function(req,res,next){
     AdminUtils.adminRoute(req,res,
         authenticated =>{
-            Sizes.create(req.params, success=>{
-                res.json("success");
+            Sizes.create(req.params, idInfo=>{
+                res.json(idInfo);
             },next);
         }
     , next);
@@ -19,10 +19,7 @@ router.get("/", function(req,res,next){
     Sizes.index(sizes=>{
         const index = {};
         sizes.forEach(size=>{
-            index[size.name] ={
-                name: size.name,
-                price: size.price
-            };
+            index[size.id] = Size.renderSize(size);
         });
         res.json(index);
     }, next);

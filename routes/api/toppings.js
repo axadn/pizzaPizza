@@ -8,8 +8,8 @@ const Toppings = require("./topping_utils");
 router.post("/", function(req,res,next){
     AdminUtils.adminRoute(req,res,
         authenticated =>{
-            Toppings.create(req.params, success=>{
-                res.json("success");
+            Toppings.create(req.params, idInfo=>{
+                res.json(idInfo);
             },next);
         }
     ,next);

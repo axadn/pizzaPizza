@@ -32,7 +32,7 @@ module.exports.create = function(params, done, onError){
         (error, result, fields)=>{
             if(error){
                 onError(error);
-            }else done(result);
+            }else done({id: result.insertId});
         }
     )
 }
@@ -47,6 +47,9 @@ module.exports.delete = function(id, done, onError){
         }
     );
 }
+module.exports.renderTopping = ({id,name,price}) =>({
+    id, name, price
+});
 
 module.exports.index = function (done, onError){
     db.get().query(
