@@ -31,9 +31,9 @@ function paramsErrors(username, password, done, onError){
             if(user){
                 errors.push("username is taken");
             }
-            if(username < 6){
+            if(username.length < 6){
                 errors.push("username must be at least 6 characters");
-            }else if(username >30){
+            }else if(username.length >30){
                 errors.push("username must be no more than 30 characters");
             }
             if(password.length < 6){
