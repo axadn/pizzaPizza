@@ -10,17 +10,14 @@ const DEFAULT_ADMIN = {
     username: "admin",
     password: "password"
 }
-User.setPassword(DEFAULT_ADMIN.password, digest=>{
-    User.generateSessionToken(token=>{
-        db.get().query(
-            SqlString.format("INSERT INTO users (username, password_digest, session_token, is_admin)" 
-            + " VALUES(?, ?, ?, ?)",[DEFAULT_ADMIN.username, digest, token, false]),
-            (error, results, fields)=>{
-                if(error) console.log(error);
-            }
-        );
-    }, error=> console.log(error)); 
-}, error=> console.log(error));
+User.create(
+    {
+        username: DEFAULT_ADMIN.username,
+        password:DEFAULT_ADMIN.password
+    },
+    success=>console.log("created admin"),
+    error=> console.log(error)
+);
 
 db.batchFromFile("seed.sql", err=>{
     if(err) console.log(err);
