@@ -7,70 +7,44 @@ const Session = require("./session_utils");
 
 module.exports = router;
 
+function login(user, password, res, next){
+    User.isPassword(password, user.password_digest,
+        validLogin=>{
+            if(validLogin){
+                User.resetSessionToken(user,
+                    token=>{
+                        res.cookie("session_token", token);
+                        res.json({id: user.id, username: user.username,
+                            is_admin: user.is_admin});
+                    }, next
+                );
+            }
+            else res.json({errors:["invalid username or password"]});   
+        },
+        next
+    );
+}
+
 router.post("/", function(req, res, next){
-    User.fromUsername(res.params.username, result=>{
-        if(result.length === 0){
-            res.json({errors:["invalid username or password"]});
-        }
-        else{
-            user = result[0];
-            User.isPassword(res.params.password, user.password_digest,
-                validLogin=>{
-                    if(validLogin){
-                        Session.generateSessionToken(token=>{
-                            db.get().query(
-                                SqlString.format("UPDATE users SET session_token = ? WHERE id = ?",
-                                    [token,user.id]),
-                                (error, result, fields)=>{
-                                    if(error){
-                                        next(error);
-                                    }
-                                    else{
-                                        res.cookie("session_token", token);
-                                        res.json({id: user.id, username: user.username,
-                                            is_admin: user.is_admin});
-                                    }
-                                }
-                            );
-                        }, next);
-                    }
-                    else{
-                        res.json({errors:["invalid username or password"]});
-                    }
-                },
-                next
-            );
-        }
-    },next)
+    User.fromUsername(req.params.username, user=>{
+        if(user) login(user, req.params.password, res, next);
+        else res.json({errors:["invalid username or password"]});
+    }, next);
 }); 
+
+function logout(user, res, next){
+    User.resetSessionToken(user, success=>{
+        res.clearCookie("session_token");
+        res.json("success");
+    }, next);
+};
 
 router.delete("/", function(req, res, next){
     if(req.cookies.session_token){
-        User.fromSessionToken(req.cookies.session_token, result=>{
-            if(result.length === 0){
-                res.json({errors: "no such user"});
-            }
-            else{
-                const user = result[0];
-                Session.generateSessionToken(token=>{
-                    db.get().query(
-                        SqlString.format(
-                            "UPDATE users SET (session_token = ? WHERE id = ?",[token, user.id]
-                        )
-                        ,(err, result, fields)=>{
-                            if(error){
-                                next(error);
-                            }else{
-                                res.clearCookie("session_token");
-                                res.json("success");
-                            }
-                        }
-                    );
-                }, next);
-            }
+        User.fromSessionToken(req.cookies.session_token, user=>{
+            if(user) logout(user, res, next);
+            else res.json({errors: "no such user"});
         }, next);
     }
-    else{
-        res.json({errors:["not logged in"]});
-    }
+    else res.json({errors:["not logged in"]});
 });

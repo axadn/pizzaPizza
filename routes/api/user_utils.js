@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const SALT_ROUNDS = 10;
 const db = require("../../db");
 const SqlString = require('sqlstring');
+const Session = require('./session_utils');
 
 module.exports.fromSessionToken = function fromSessionToken(token, done, onError){
     db.get().query(
@@ -16,20 +17,49 @@ module.exports.fromSessionToken = function fromSessionToken(token, done, onError
     );
 }
 
+module.exports.currentUser = function(req, done, onError){
+    const token = req.cookies.session_token;
+    if(token) User.fromSessionToken(token, done, onError);
+    else return null;
+};
+
+module.exports.setSessionToken = function (id, token, done, onError){
+    Session.generateSessionToken(token=>{
+        db.get().query(
+            SqlString.format("UPDATE users SET session_token = ? WHERE id = ?",
+                [token,user.id]),
+            (error, result, fields)=>{
+                if(error){
+                    onError(error);
+                }
+                else{
+                    done(token);
+                }
+            }
+        );
+    });
+};
+
+module.exports.resetSessionToken = function resetSessionToken(user, done, onError){
+    Session.generateSessionToken(token=>{
+        setSessionToken(user, token, 
+            success=>{
+                done(token);
+            }, onError)
+    }, onError);
+}
 module.exports.fromUsername = function(username, done, onError){
     db.get().query(
         SqlString.format('SELECT * FROM users WHERE username = ?', [username]),
         (error, result, fields)=>{
             if(error){
                 onError(error);
-            } else if(result){
-                done(result);
-            }else done([]);
+            } else done(result);
         }
     );
 }
 
-module.exports.setPassword = function setPassword(password, done, onError){
+module.exports.generatePasswordDigest = function setPassword(password, done, onError){
     bcrypt.hash(password, SALT_ROUNDS, function(err, hash) {
         if(err){
             onError(err);
@@ -43,4 +73,23 @@ module.exports.isPassword = function isPassword(password, hash, done, onError){
             onError(err);
         } else done(res);
     });
+}
+
+module.exports.create = function(params, done, onError){
+    generatePasswordDigest(params.password, digest=>{
+        Session.generateSessionToken(token=>{
+            db.get().query(
+                SqlString.format("INSERT INTO users (username, password_digest, session_token, is_admin)" 
+                + "VALUES(?, ?, ?, ?)",[params.username, digest, token, false]),
+                (error, results, fields)=>{
+                    if(error){
+                        next(error);
+                    } 
+                    else{
+                        done();
+                    }
+                }
+            );
+        }, next); 
+    }, next);
 }

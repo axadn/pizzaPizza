@@ -17,54 +17,42 @@ router.get('/:id', function(req, res, next) {
                     is_admin: results[0].is_admin})
             }
             else{
-                res.status(404)
+                res.status(404);
                 res.json("not found");
             }
         }
     );
 });
 
-router.post('/', function(req, res, next){
+function paramsErrors(username, password, done, onError){
+    const errors = [];
     User.fromUsername(
         req.body.username,
-        results =>{
-            const errors = [];
-            if(results.length !== 0){
+        user =>{
+            if(user){
                 errors.push("username is taken");
             }
-            if(req.body.username.length < 6){
+            if(username < 6){
                 errors.push("username must be at least 6 characters");
-            }else if(req.body.username.length >30){
+            }else if(username >30){
                 errors.push("username must be no more than 30 characters");
             }
-            if(req.body.password.length < 6){
+            if(password.length < 6){
                 errors.push("passwword must be at least 6 characters");
-            }else if (req.body.password.length > 30){
+            }else if (password.length > 30){
                 errors.push("password must be no more than 30 characters");
             }
-            if(errors.length !==0){
-                res.json({errors});
-            }else{
-                User.setPassword(req.body.password, digest=>{
-                    Session.generateSessionToken(token=>{
-                        db.get().query(
-                            SqlString.format("INSERT INTO users (username, password_digest, session_token, is_admin)" 
-                            + "VALUES(?, ?, ?, ?)",[req.body.username, digest, token, false]),
-                            (error, results, fields)=>{
-                                if(error){
-                                    next(error);
-                                } 
-                                else{
-                                    res.json("success");
-                                }
-                            }
-                        );
-                    }, next); 
-                }, next);
-            }
-        },
-        error => next(error)
+            done(errors);
+        }, onError
     );
+};
+router.post('/', function(req, res, next){
+    paramsErrors(req.body.username, req.body.password, errors=>{
+        if(errors.length ===0){
+            User.create({username: req.body.username, password: req.body.password},
+                success=> res.json("success"), next);
+        }else res.json({errors});
+    }, next);
 });
 
 module.exports = router;
