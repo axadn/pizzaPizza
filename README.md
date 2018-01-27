@@ -32,29 +32,33 @@ Pizza Pizza is a pizza ordering application built with a Node.js backend and a R
 {
   entities: {
       toppings: {
-          pepperoni: {
+          2: {
               name: "pepperoni",
               price: 1.5
           },
-          tomatoes: {
+          4: {
               name: "tomatoes",
               price: 1.45
           },
-          anchovies: {
+          8: {
               name: "anchovies",
               price: 2
+          },
+          23: {
+              name: "a boot",
+              price: 99
           }
       },
       sizes: {
-          medium: {
+          1: {
               name: "medium",
               price: 15
           },
-          large: {
+          3: {
               name: "large",
               price: 20
           },
-          king: {
+          4: {
               name: "king",
               price: 24
           }
@@ -64,7 +68,13 @@ Pizza Pizza is a pizza ordering application built with a Node.js backend and a R
       current_user:{
           username: "admin1",
           isAdmin: "true"
-      } 
+      },
+      cart:{
+          pizzas:[
+            {size: "medium", toppings: [2]},
+            {size: "king", toppings: [3, 4]}            
+          ]
+      }
   }
 }
 ````
