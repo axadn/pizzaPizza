@@ -49,3 +49,14 @@ module.exports.create = function(params, done, onError){
         }
     )
 }
+
+module.exports.delete = function(id, done, onError){
+    db.get().query(
+        SqlString.format('DELETE FROM toppings WHERE id = ?', [id]),
+        (error, result, fields)=>{
+            if(error){
+                onError(error);
+            }else done(result);
+        }
+    );
+}
