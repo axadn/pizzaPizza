@@ -22708,13 +22708,18 @@ var _order_container = __webpack_require__(184);
 
 var _order_container2 = _interopRequireDefault(_order_container);
 
+var _cart_container = __webpack_require__(186);
+
+var _cart_container2 = _interopRequireDefault(_cart_container);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (props) {
     return _react2.default.createElement(
         "div",
         { className: "main-content" },
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", component: _order_container2.default })
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", component: _order_container2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/cart", component: _cart_container2.default })
     );
 };
 
@@ -29766,6 +29771,182 @@ var formatPrice = exports.formatPrice = function formatPrice(price) {
     }
     return "$" + wholePart + "." + decimalPart;
 };
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _reactRedux = __webpack_require__(16);
+
+var _cart = __webpack_require__(133);
+
+var _selectors = __webpack_require__(49);
+
+var _cart2 = __webpack_require__(187);
+
+var _cart3 = _interopRequireDefault(_cart2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        pizzas: (0, _selectors.cart)(state),
+        getPizzaInfo: function getPizzaInfo(pizza) {
+            var t = (0, _selectors.toppings)(state);
+            var s = (0, _selectors.sizes)(state);
+            var total = s[pizza.size].price;
+            var toppingNames = [];
+            Object.keys(pizza.toppings).forEach(function (id) {
+                total += t[id].price;
+                toppingNames.push(t[id].name);
+            });
+            return { sizeName: s[pizza.size].name, toppingNames: toppingNames, total: total };
+        }
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        deletePizza: function deletePizza(idx) {
+            return dispatch((0, _cart.removePizza)(idx));
+        }
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_cart3.default);
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _string = __webpack_require__(185);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Cart = function (_React$Component) {
+    _inherits(Cart, _React$Component);
+
+    function Cart(props) {
+        _classCallCheck(this, Cart);
+
+        var _this = _possibleConstructorReturn(this, (Cart.__proto__ || Object.getPrototypeOf(Cart)).call(this, props));
+
+        _this.handleDelete = _this.handleDelete.bind(_this);
+        return _this;
+    }
+
+    _createClass(Cart, [{
+        key: "handleDelete",
+        value: function handleDelete(idx) {
+            var _this2 = this;
+
+            return function (e) {
+                e.stopPropagation();
+                _this2.props.deletePizza(idx);
+            };
+        }
+    }, {
+        key: "formatPizza",
+        value: function formatPizza(pizza) {
+            var info = this.props.getPizzaInfo(pizza);
+            return _react2.default.createElement(
+                "div",
+                { className: "cart-pizza-info" },
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    " ",
+                    info.sizeName
+                ),
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    " ",
+                    info.toppingNames.join(", ")
+                ),
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    " ",
+                    (0, _string.formatPrice)(info.total)
+                )
+            );
+        }
+    }, {
+        key: "renderPizzas",
+        value: function renderPizzas() {
+            var _this3 = this;
+
+            return _react2.default.createElement(
+                "ul",
+                { className: "cart-pizza-list" },
+                this.props.pizzas.map(function (pizza, idx) {
+                    return _react2.default.createElement(
+                        "li",
+                        { key: "cartItem" + idx },
+                        _this3.formatPizza(pizza),
+                        _react2.default.createElement(
+                            "button",
+                            { onClick: _this3.handleDelete(idx) },
+                            "delete"
+                        )
+                    );
+                })
+            );
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "cart-component" },
+                this.renderPizzas(),
+                _react2.default.createElement(
+                    "button",
+                    { onClick: function onClick(e) {
+                            return window.location = "/#/";
+                        } },
+                    "Add Pizza"
+                ),
+                _react2.default.createElement(
+                    "button",
+                    null,
+                    "Check out"
+                )
+            );
+        }
+    }]);
+
+    return Cart;
+}(_react2.default.Component);
+
+exports.default = Cart;
 
 /***/ })
 /******/ ]);

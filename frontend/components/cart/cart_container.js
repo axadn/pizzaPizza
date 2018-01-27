@@ -1,12 +1,13 @@
 import {connect} from "react-redux";
 import {removePizza} from "Actions/cart";
 import {cart, toppings, sizes} from "Reducers/selectors";
+import Cart from "./cart";
 
 const mapStateToProps = state =>({
     pizzas: cart(state),
     getPizzaInfo: pizza =>{
-        t = state(toppings);
-        s = state(sizes);
+        const t = toppings(state);
+        const s = sizes(state);
         let total = s[pizza.size].price; 
         const toppingNames = [];
         Object.keys(pizza.toppings).forEach(id=>{
@@ -20,3 +21,5 @@ const mapStateToProps = state =>({
 const mapDispatchToProps = dispatch=>({
     deletePizza: idx=> dispatch(removePizza(idx))
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
