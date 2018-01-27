@@ -1,3 +1,6 @@
+
+Pizza Pizza is a pizza ordering application built with a Node.js backend and a React.js front end.
+
 # Database Schema
 
 ## `users`
