@@ -25728,28 +25728,10 @@ var mapStateToProps = function mapStateToProps(state) {
 
 /***/ }),
 /* 118 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (props) {
-    return _react2.default.createElement(
-        "div",
-        { className: "order-component" },
-        "Order Here."
-    );
-};
+throw new Error("Module build failed: SyntaxError: Only one default export allowed per module. (9:0)\n\n\u001b[0m \u001b[90m  7 | \u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m  8 | \u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  9 | \u001b[39m\u001b[36mexport\u001b[39m \u001b[36mdefault\u001b[39m \u001b[36mclass\u001b[39m \u001b[33mOrder\u001b[39m \u001b[36mextends\u001b[39m \u001b[33mReact\u001b[39m\u001b[33m.\u001b[39m\u001b[33mComponent\u001b[39m{\n \u001b[90m    | \u001b[39m\u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 10 | \u001b[39m    constructor(props){\n \u001b[90m 11 | \u001b[39m        \u001b[36msuper\u001b[39m(props)\u001b[33m;\u001b[39m\n \u001b[90m 12 | \u001b[39m    }\u001b[0m\n");
 
 /***/ }),
 /* 119 */
@@ -26053,10 +26035,13 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.getSizes = exports.addSize = exports.removeSize = exports.receiveSizes = exports.ADD_SIZE = exports.REMOVE_SIZE = exports.RECEIVE_SIZES = undefined;
+
+var _sizes = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"Utils/api/sizes\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
 var RECEIVE_SIZES = exports.RECEIVE_SIZES = "RECEIVE_SIZES";
 var REMOVE_SIZE = exports.REMOVE_SIZE = "REMOVE_SIZE";
 var ADD_SIZE = exports.ADD_SIZE = "ADD_SIZE";
-
 var receiveSizes = exports.receiveSizes = function receiveSizes(sizes) {
     return {
         sizes: sizes,
@@ -26075,6 +26060,20 @@ var addSize = exports.addSize = function addSize(size) {
     return {
         size: size,
         type: ADD_SIZE
+    };
+};
+
+var getSizes = exports.getSizes = function getSizes(done, onError) {
+    return function (dispatch) {
+        (0, _sizes.get)().then(function (_ref) {
+            var data = _ref.data;
+
+            if (data.errors) {
+                onError(data.errors);
+            } else {
+                done(data);
+            }
+        });
     };
 };
 
@@ -26120,10 +26119,13 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.getToppings = exports.addTopping = exports.removeTopping = exports.receiveToppings = exports.ADD_TOPPING = exports.REMOVE_TOPPING = exports.RECEIVE_TOPPINGS = undefined;
+
+var _toppings = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"Utils/api/toppings\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
 var RECEIVE_TOPPINGS = exports.RECEIVE_TOPPINGS = "RECEIVE_TOPPINGS";
 var REMOVE_TOPPING = exports.REMOVE_TOPPING = "REMOVE_TOPPING";
 var ADD_TOPPING = exports.ADD_TOPPING = "ADD_TOPPING";
-
 var receiveToppings = exports.receiveToppings = function receiveToppings(toppings) {
     return {
         toppings: toppings,
@@ -26142,6 +26144,20 @@ var addTopping = exports.addTopping = function addTopping(topping) {
     return {
         topping: topping,
         type: ADD_TOPPING
+    };
+};
+
+var getToppings = exports.getToppings = function getToppings(done, onError) {
+    return function (dispatch) {
+        (0, _toppings.get)().then(function (_ref) {
+            var data = _ref.data;
+
+            if (data.errors) {
+                onError(data.errors);
+            } else {
+                done(data);
+            }
+        });
     };
 };
 
