@@ -3420,10 +3420,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 document.addEventListener("DOMContentLoaded", function () {
     var root = document.getElementById("root");
+    debugger;
     if (window.currentUser) {
         _store2.default.dispatch((0, _session.receiveCurrentUser)(window.curentUser));
-        _reactDom2.default.render(_react2.default.createElement(_root2.default, { store: _store2.default }), root);
     }
+    _reactDom2.default.render(_react2.default.createElement(_root2.default, { store: _store2.default }), root);
 });
 
 /***/ }),
@@ -22532,7 +22533,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function () {
     return _react2.default.createElement(
-        HashRoute,
+        _reactRouterDom.HashRouter,
         null,
         _react2.default.createElement(
             "div",
@@ -25662,7 +25663,11 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (props) {
-  return _react2.default.createElement("div", { className: "nav-bar-component" });
+  return _react2.default.createElement(
+    "div",
+    { className: "nav-bar-component" },
+    _react2.default.createElement(SessionButtonsContainer, null)
+  );
 };
 
 /***/ }),
@@ -25746,11 +25751,16 @@ var _session = __webpack_require__(124);
 
 var _session2 = _interopRequireDefault(_session);
 
+var _modal = __webpack_require__(129);
+
+var _modal2 = _interopRequireDefault(_modal);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
     entities: _entities2.default,
-    session: _session2.default
+    session: _session2.default,
+    modal: _modal2.default
 });
 
 /***/ }),
@@ -25791,11 +25801,22 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _sizes = __webpack_require__(132);
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 exports.default = function () {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var action = arguments[1];
 
     switch (action.type) {
+        case _sizes.RECEIVE_SIZES:
+            return action.sizes;
+        case _sizes.ADD_SIZE:
+            return Object.assign({}, state, _defineProperty({}, action.size.id, action.size));
+        case _sizes.REMOVE_SIZE:
+            var copy = Object.assign({}, state);
+            delete copy[action.id];
         default:
             return state;
     }
@@ -25812,11 +25833,22 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _toppings = __webpack_require__(133);
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 exports.default = function () {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var action = arguments[1];
 
     switch (action.type) {
+        case _toppings.RECEIVE_TOPPINGS:
+            return action.toppings;
+        case _toppings.ADD_TOPPING:
+            return Object.assign({}, state, _defineProperty({}, action.topping.id, action.topping));
+        case _toppings.REMOVE_TOPPING:
+            var copy = Object.assign({}, state);
+            delete copy[action.id];
         default:
             return state;
     }
@@ -25860,11 +25892,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _session = __webpack_require__(128);
+
 exports.default = function () {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var action = arguments[1];
 
     switch (action.type) {
+        case _session.RECEIVE_CURRENT_USER:
+            return action.user;
+        case _session.DELETE_CURRENT_USER:
+            return null;
         default:
             return state;
     }
@@ -25881,11 +25919,19 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _cart = __webpack_require__(131);
+
 exports.default = function () {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var action = arguments[1];
 
     switch (action.type) {
+        case _cart.ADD_PIZZA:
+            return state.concat(action.pizza);
+        case _cart.REMOVE_PIZZA:
+            return state.slice(0, action.index).concat(state.slice(action.index + 1));
+        case _cart.EMPTY_CART:
+            return [];
         default:
             return state;
     }
@@ -25922,6 +25968,171 @@ var receiveCurrentUser = exports.receiveCurrentUser = function receiveCurrentUse
 var deleteCurrentUser = exports.deleteCurrentUser = function deleteCurrentUser() {
     return {
         type: DELETE_CURRENT_USER
+    };
+};
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _modal = __webpack_require__(130);
+
+exports.default = function () {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _modal.OPEN_LOGIN_MODAL:
+            return "login";
+        case _modal.OPEN_SIGNUP_MODAL:
+            return "signup";
+        case _modal.CLOSE_MODAL:
+            return null;
+        default:
+            return state;
+    }
+};
+
+/***/ }),
+/* 130 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var OPEN_LOGIN_MODAL = exports.OPEN_LOGIN_MODAL = "OPEN_LOGIN_MODAL";
+var OPEN_SIGNUP_MODAL = exports.OPEN_SIGNUP_MODAL = "OPEN_SIGNUP_MODAL";
+var CLOSE_MODAL = exports.CLOSE_MODAL = "CLOSE_MODAL";
+
+var openLoginModal = exports.openLoginModal = function openLoginModal() {
+    return {
+        type: OPEN_LOGIN_MODAL
+    };
+};
+
+var openSignupModal = exports.openSignupModal = function openSignupModal() {
+    return {
+        type: OPEN_SIGNUP_MODAL
+    };
+};
+
+var closeModal = exports.closeModal = function closeModal() {
+    return {
+        type: CLOSE_MODAL
+    };
+};
+
+/***/ }),
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var ADD_PIZZA = exports.ADD_PIZZA = "ADD_PIZZA";
+var REMOVE_PIZZA = exports.REMOVE_PIZZA = "REMOVE_PIZZA";
+var EMPTY_CART = exports.EMPTY_CART = "EMPTY_CART";
+
+var addPizza = exports.addPizza = function addPizza(pizza) {
+    return {
+        pizza: pizza,
+        type: ADD_PIZZA
+    };
+};
+
+var removePizza = exports.removePizza = function removePizza(index) {
+    return {
+        index: index,
+        type: REMOVE_PIZZA
+    };
+};
+
+var emptyCart = exports.emptyCart = function emptyCart() {
+    return {
+        type: EMPTY_CART
+    };
+};
+
+/***/ }),
+/* 132 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var RECEIVE_SIZES = exports.RECEIVE_SIZES = "RECEIVE_SIZES";
+var REMOVE_SIZE = exports.REMOVE_SIZE = "REMOVE_SIZE";
+var ADD_SIZE = exports.ADD_SIZE = "ADD_SIZE";
+
+var receiveSizes = exports.receiveSizes = function receiveSizes(sizes) {
+    return {
+        sizes: sizes,
+        type: RECEIVE_SIZES
+    };
+};
+
+var removeSize = exports.removeSize = function removeSize(id) {
+    return {
+        size: size,
+        type: REMOVE_SIZE
+    };
+};
+
+var addSize = exports.addSize = function addSize(size) {
+    return {
+        size: size,
+        type: ADD_SIZE
+    };
+};
+
+/***/ }),
+/* 133 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var RECEIVE_TOPPINGS = exports.RECEIVE_TOPPINGS = "RECEIVE_TOPPINGS";
+var REMOVE_TOPPING = exports.REMOVE_TOPPING = "REMOVE_TOPPING";
+var ADD_TOPPING = exports.ADD_TOPPING = "ADD_TOPPING";
+
+var receiveToppings = exports.receiveToppings = function receiveToppings(toppings) {
+    return {
+        toppings: toppings,
+        type: RECEIVE_TOPPINGS
+    };
+};
+
+var removeTopping = exports.removeTopping = function removeTopping(id) {
+    return {
+        toppings: toppings,
+        type: REMOVE_TOPPING
+    };
+};
+
+var addTopping = exports.addTopping = function addTopping(topping) {
+    return {
+        topping: topping,
+        type: ADD_TOPPING
     };
 };
 

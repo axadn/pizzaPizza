@@ -5,10 +5,10 @@ import NavBar from "./nav_bar/nav_bar";
 import {HashRouter} from "react-router-dom";
 
 export default ()=>(
-    <HashRoute>
+    <HashRouter>
         <div className="app">
             <NavBar/>
             <MainContent/>
         </div>
-    </HashRoute>
+    </HashRouter>
 );
