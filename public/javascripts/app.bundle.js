@@ -3420,7 +3420,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 document.addEventListener("DOMContentLoaded", function () {
     var root = document.getElementById("root");
-    debugger;
     if (window.currentUser) {
         _store2.default.dispatch((0, _session.receiveCurrentUser)(window.curentUser));
     }
@@ -25660,13 +25659,17 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _session_buttons_container = __webpack_require__(134);
+
+var _session_buttons_container2 = _interopRequireDefault(_session_buttons_container);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (props) {
   return _react2.default.createElement(
     "div",
     { className: "nav-bar-component" },
-    _react2.default.createElement(SessionButtonsContainer, null)
+    _react2.default.createElement(_session_buttons_container2.default, null)
   );
 };
 
@@ -26135,6 +26138,112 @@ var addTopping = exports.addTopping = function addTopping(topping) {
         type: ADD_TOPPING
     };
 };
+
+/***/ }),
+/* 134 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _selectors = __webpack_require__(115);
+
+var _modal = __webpack_require__(130);
+
+var _reactRedux = __webpack_require__(32);
+
+var _session_buttons = __webpack_require__(135);
+
+var _session_buttons2 = _interopRequireDefault(_session_buttons);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(state) {
+  return { loggedIn: _selectors.loggedIn, currentUser: _selectors.currentUser };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return { openLoginModal: _modal.openLoginModal, openSignupModal: _modal.openSignupModal };
+};
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_session_buttons2.default);
+
+/***/ }),
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SessionButtons = function (_React$Component) {
+    _inherits(SessionButtons, _React$Component);
+
+    function SessionButtons(props) {
+        _classCallCheck(this, SessionButtons);
+
+        return _possibleConstructorReturn(this, (SessionButtons.__proto__ || Object.getPrototypeOf(SessionButtons)).call(this, props));
+    }
+
+    _createClass(SessionButtons, [{
+        key: "render",
+        value: function render() {
+            if (this.props.currentUser) {
+                return _react2.default.createElement(
+                    "div",
+                    { className: "user-button" },
+                    _react2.default.createElement(
+                        "a",
+                        null,
+                        this.props.currentUser.username
+                    )
+                );
+            } else {
+                return _react2.default.createElement(
+                    "div",
+                    { className: "modal-open-buttons" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "modal-open-button",
+                            onClick: props.openLoginModal },
+                        "log in"
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "modal-open-button",
+                            onClick: props.openSignupModal },
+                        "sign up"
+                    )
+                );
+            }
+        }
+    }]);
+
+    return SessionButtons;
+}(_react2.default.Component);
+
+exports.default = SessionButtons;
+;
 
 /***/ })
 /******/ ]);
