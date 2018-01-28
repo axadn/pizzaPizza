@@ -1,8 +1,20 @@
 const db = require("./db");
-db.connect(()=>{
-   console.log("conncected");
-   db.batchFromFile("createDatabase.sql", ()=>{
-       console.log("done")
-       process.exit(0);
-    });
+db.connect(error=>{
+    if(error){
+        console.log(error);
+        process.exit(1);
+    }
+    else{
+        console.log("conncected");
+        db.batchFromFile("createDatabase.sql", error=>{
+            if(error){
+                console.log(error);
+                process.exit(1);
+            }
+            else{
+                console.log("done")
+                process.exit(0);
+            }
+        });
+    }
 });

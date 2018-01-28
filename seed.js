@@ -3,6 +3,10 @@ const User = require("./routes/api/user_utils");
 const SqlString = require('sqlstring');
 const DEFAULT_ADMIN = require("./defaultAdmin");
 db.connect(err=>{
+    if(err){
+        console.log(err);
+        process.exit(1);
+    }
     User.create(
         {
             username: DEFAULT_ADMIN.username,
@@ -17,6 +21,7 @@ db.connect(err=>{
         },
         error=>{
             console.log(error);
+            process.exit(1);
         } 
     );
 });
