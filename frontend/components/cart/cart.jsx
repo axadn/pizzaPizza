@@ -6,6 +6,14 @@ export default class Cart extends React.Component{
         super(props);
         this.handleDelete = this.handleDelete.bind(this);
     }
+    componentDidMount(){
+        if(this.props.toppings.length === 0){
+            this.props.getSizes();
+        }
+        if(this.props.sizes.length === 0){
+            this.props.getToppings();
+        }
+    }
     handleDelete(idx){
         return e=>{
             e.stopPropagation();

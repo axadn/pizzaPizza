@@ -29814,6 +29814,10 @@ var _cart2 = __webpack_require__(187);
 
 var _cart3 = _interopRequireDefault(_cart2);
 
+var _toppings = __webpack_require__(129);
+
+var _sizes = __webpack_require__(127);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(state) {
@@ -29829,7 +29833,9 @@ var mapStateToProps = function mapStateToProps(state) {
                 toppingNames.push(t[id].name);
             });
             return { sizeName: s[pizza.size].name, toppingNames: toppingNames, total: total };
-        }
+        },
+        toppings: (0, _selectors.toppings)(state),
+        sizes: (0, _selectors.sizes)(state)
     };
 };
 
@@ -29837,6 +29843,16 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
         deletePizza: function deletePizza(idx) {
             return dispatch((0, _cart.removePizza)(idx));
+        },
+        getToppings: function getToppings() {
+            return dispatch((0, _toppings.getToppings)(function (toppings) {
+                return dispatch((0, _toppings.receiveToppings)(toppings));
+            }));
+        },
+        getSizes: function getSizes() {
+            return dispatch((0, _sizes.getSizes)(function (sizes) {
+                return dispatch((0, _sizes.receiveSizes)(sizes));
+            }));
         }
     };
 };
@@ -29883,6 +29899,16 @@ var Cart = function (_React$Component) {
     }
 
     _createClass(Cart, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            if (this.props.toppings.length === 0) {
+                this.props.getSizes();
+            }
+            if (this.props.sizes.length === 0) {
+                this.props.getToppings();
+            }
+        }
+    }, {
         key: "handleDelete",
         value: function handleDelete(idx) {
             var _this2 = this;
