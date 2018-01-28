@@ -7,11 +7,11 @@ export default class Cart extends React.Component{
         this.handleDelete = this.handleDelete.bind(this);
     }
     componentDidMount(){
-        if(this.props.toppings.length === 0){
-            this.props.getSizes();
+        if(Object.keys(this.props.toppings).length === 0){
+            this.props.getSizes(this.handleDataLoaded);
         }
-        if(this.props.sizes.length === 0){
-            this.props.getToppings();
+        if(Object.keys(this.props.sizes).length === 0){
+            this.props.getToppings(this.handleDataLoaded);
         }
     }
     handleDelete(idx){
@@ -19,6 +19,15 @@ export default class Cart extends React.Component{
             e.stopPropagation();
             this.props.deletePizza(idx);
         };
+    }
+    loaded(){
+        return Object.keys(this.props.toppings).length > 0 &&
+        Object.keys(this.props.sizes).length > 0;
+    }
+    handleDataLoaded(){
+        if(this.props.toppings.length > 0 && this.props.sizes.length > 0){
+            this.setState({loaded: true});
+        }
     }
     formatPizza(pizza){
         const info = this.props.getPizzaInfo(pizza);
@@ -45,13 +54,22 @@ export default class Cart extends React.Component{
         total};
     }
     render(){
-        const pizzas = this.renderPizzas();
-        return <div className="cart-component">
-            <h2>Your Cart</h2>
-            {pizzas.jsx}
-            <button onClick={e=> window.location="/#/"}>Add Pizza</button>
-            <button>Check out</button>
-            <div> Total: <a>{formatPrice(pizzas.total)}</a></div>
-        </div>
+        if(this.loaded()){
+            const pizzas = this.renderPizzas();
+            return <div className="cart-component">
+                <h2>Your Cart</h2>
+                {pizzas.jsx}
+                <button onClick={e=> window.location="/#/"}>Add Pizza</button>
+                <button>Check out</button>
+                <div> Total: <a>{formatPrice(pizzas.total)}</a></div>
+            </div>;
+        }
+        else{
+            return <div className="cart-component">
+                <h2>Your Cart</h2>
+                Loading...
+            </div>;
+        }
+        
     };
 }

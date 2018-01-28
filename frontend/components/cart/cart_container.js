@@ -24,8 +24,8 @@ const mapStateToProps = state =>({
 
 const mapDispatchToProps = dispatch=>({
     deletePizza: idx=> dispatch(removePizza(idx)),
-    getToppings: () => dispatch(getToppings(toppings=>dispatch(receiveToppings(toppings)))),
-    getSizes: () => dispatch(getSizes(sizes=>dispatch(receiveSizes(sizes))))
+    getToppings: done => dispatch(getToppings(toppings=>dispatch(receiveToppings(toppings)))),
+    getSizes: done => dispatch(getSizes(sizes=>dispatch(receiveSizes(sizes))))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

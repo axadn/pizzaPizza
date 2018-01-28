@@ -29844,12 +29844,12 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         deletePizza: function deletePizza(idx) {
             return dispatch((0, _cart.removePizza)(idx));
         },
-        getToppings: function getToppings() {
+        getToppings: function getToppings(done) {
             return dispatch((0, _toppings.getToppings)(function (toppings) {
                 return dispatch((0, _toppings.receiveToppings)(toppings));
             }));
         },
-        getSizes: function getSizes() {
+        getSizes: function getSizes(done) {
             return dispatch((0, _sizes.getSizes)(function (sizes) {
                 return dispatch((0, _sizes.receiveSizes)(sizes));
             }));
@@ -29901,11 +29901,11 @@ var Cart = function (_React$Component) {
     _createClass(Cart, [{
         key: "componentDidMount",
         value: function componentDidMount() {
-            if (this.props.toppings.length === 0) {
-                this.props.getSizes();
+            if (Object.keys(this.props.toppings).length === 0) {
+                this.props.getSizes(this.handleDataLoaded);
             }
-            if (this.props.sizes.length === 0) {
-                this.props.getToppings();
+            if (Object.keys(this.props.sizes).length === 0) {
+                this.props.getToppings(this.handleDataLoaded);
             }
         }
     }, {
@@ -29917,6 +29917,18 @@ var Cart = function (_React$Component) {
                 e.stopPropagation();
                 _this2.props.deletePizza(idx);
             };
+        }
+    }, {
+        key: "loaded",
+        value: function loaded() {
+            return Object.keys(this.props.toppings).length > 0 && Object.keys(this.props.sizes).length > 0;
+        }
+    }, {
+        key: "handleDataLoaded",
+        value: function handleDataLoaded() {
+            if (this.props.toppings.length > 0 && this.props.sizes.length > 0) {
+                this.setState({ loaded: true });
+            }
         }
     }, {
         key: "formatPizza",
@@ -29980,39 +29992,52 @@ var Cart = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            var pizzas = this.renderPizzas();
-            return _react2.default.createElement(
-                "div",
-                { className: "cart-component" },
-                _react2.default.createElement(
-                    "h2",
-                    null,
-                    "Your Cart"
-                ),
-                pizzas.jsx,
-                _react2.default.createElement(
-                    "button",
-                    { onClick: function onClick(e) {
-                            return window.location = "/#/";
-                        } },
-                    "Add Pizza"
-                ),
-                _react2.default.createElement(
-                    "button",
-                    null,
-                    "Check out"
-                ),
-                _react2.default.createElement(
+            if (this.loaded()) {
+                var pizzas = this.renderPizzas();
+                return _react2.default.createElement(
                     "div",
-                    null,
-                    " Total: ",
+                    { className: "cart-component" },
                     _react2.default.createElement(
-                        "a",
+                        "h2",
                         null,
-                        (0, _string.formatPrice)(pizzas.total)
+                        "Your Cart"
+                    ),
+                    pizzas.jsx,
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: function onClick(e) {
+                                return window.location = "/#/";
+                            } },
+                        "Add Pizza"
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        null,
+                        "Check out"
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        " Total: ",
+                        _react2.default.createElement(
+                            "a",
+                            null,
+                            (0, _string.formatPrice)(pizzas.total)
+                        )
                     )
-                )
-            );
+                );
+            } else {
+                return _react2.default.createElement(
+                    "div",
+                    { className: "cart-component" },
+                    _react2.default.createElement(
+                        "h2",
+                        null,
+                        "Your Cart"
+                    ),
+                    "Loading..."
+                );
+            }
         }
     }]);
 
