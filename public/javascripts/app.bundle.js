@@ -3549,13 +3549,25 @@ var _store2 = _interopRequireDefault(_store);
 
 var _session = __webpack_require__(51);
 
+var _cart = __webpack_require__(133);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     var root = document.getElementById("root");
     if (window.currentUser) {
         _store2.default.dispatch((0, _session.receiveCurrentUser)(window.currentUser));
     }
+
+    try {
+        _store2.default.dispatch((0, _cart.receiveCart)(JSON.parse(getCookie("cart"))));
+    } catch (err) {}
     _reactDom2.default.render(_react2.default.createElement(_root2.default, { store: _store2.default }), root);
 });
 
@@ -26215,9 +26227,13 @@ var _root2 = _interopRequireDefault(_root);
 
 var _reduxLogger = __webpack_require__(135);
 
+var _cart_cookies = __webpack_require__(190);
+
+var _cart_cookies2 = _interopRequireDefault(_cart_cookies);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = (0, _redux.createStore)(_root2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, _reduxLogger.logger));
+exports.default = (0, _redux.createStore)(_root2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, _cart_cookies2.default, _reduxLogger.logger));
 
 /***/ }),
 /* 123 */
@@ -26609,6 +26625,8 @@ exports.default = function () {
             return state.slice(0, action.index).concat(state.slice(action.index + 1));
         case _cart.EMPTY_CART:
             return [];
+        case _cart.RECEIVE_CART:
+            return action.cart;
         default:
             return state;
     }
@@ -26627,6 +26645,7 @@ Object.defineProperty(exports, "__esModule", {
 var ADD_PIZZA = exports.ADD_PIZZA = "ADD_PIZZA";
 var REMOVE_PIZZA = exports.REMOVE_PIZZA = "REMOVE_PIZZA";
 var EMPTY_CART = exports.EMPTY_CART = "EMPTY_CART";
+var RECEIVE_CART = exports.RECEIVE_CART = "RECEIVE_CART";
 
 var addPizza = exports.addPizza = function addPizza(pizza) {
     return {
@@ -26645,6 +26664,13 @@ var removePizza = exports.removePizza = function removePizza(index) {
 var emptyCart = exports.emptyCart = function emptyCart() {
     return {
         type: EMPTY_CART
+    };
+};
+
+var receiveCart = exports.receiveCart = function receiveCart(cart) {
+    return {
+        type: RECEIVE_CART,
+        cart: cart
     };
 };
 
@@ -30485,6 +30511,36 @@ var AdminDash = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = AdminDash;
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _cart = __webpack_require__(133);
+
+exports.default = function (store) {
+    return function (next) {
+        return function (action) {
+            switch (action.type) {
+                case _cart.ADD_PIZZA:
+                case _cart.REMOVE_PIZZA:
+                case _cart.EMPTY_CART:
+                    next(action);
+                    document.cookie = "cart=" + JSON.stringify(store.getState().session.cart);
+                    return;
+                default:
+                    return next(action);
+            }
+        };
+    };
+};
 
 /***/ })
 /******/ ]);

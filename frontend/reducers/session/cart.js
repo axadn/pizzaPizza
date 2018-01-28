@@ -1,4 +1,4 @@
-import {ADD_PIZZA, REMOVE_PIZZA, EMPTY_CART} from "Actions/cart";
+import {ADD_PIZZA, REMOVE_PIZZA, EMPTY_CART, RECEIVE_CART} from "Actions/cart";
 
 export default (state = [], action) =>{
     switch(action.type){
@@ -9,6 +9,8 @@ export default (state = [], action) =>{
                 state.slice(action.index + 1));
         case EMPTY_CART:
             return [];
+        case RECEIVE_CART:
+            return action.cart;
         default:
             return state;
     }

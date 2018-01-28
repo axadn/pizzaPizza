@@ -1,6 +1,7 @@
 export const ADD_PIZZA = "ADD_PIZZA";
 export const REMOVE_PIZZA = "REMOVE_PIZZA";
 export const EMPTY_CART = "EMPTY_CART";
+export const RECEIVE_CART = "RECEIVE_CART";
 
 export const addPizza = pizza =>({
     pizza,
@@ -15,3 +16,8 @@ export const removePizza = index =>({
 export const emptyCart = () =>({
     type: EMPTY_CART
 })
+
+export const receiveCart = cart =>({
+    type: RECEIVE_CART,
+    cart
+});
