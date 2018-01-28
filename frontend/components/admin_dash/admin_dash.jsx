@@ -116,7 +116,7 @@ export default class AdminDash extends React.Component{
                     <input type="text" className={nameDirty? "dirty": ""}
                      value={name} onChange={this.handleChange(key,idx,"name")}/>
                     $
-                    <input type="number" min="0.01" max="1000.00" step="0.01" className={priceDirty? "dirty": ""} 
+                    <input type="number" min="0.01" max="999.99" step="0.01" className={priceDirty? "dirty": ""} 
                         value={price} onBlur={this.handlePriceBlur(key,idx,"price")} 
                         onChange={this.handleChange(key,idx,"price")}/>
                 </div>;

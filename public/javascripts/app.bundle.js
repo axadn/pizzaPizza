@@ -30403,7 +30403,7 @@ var AdminDash = function (_React$Component) {
                         _react2.default.createElement("input", { type: "text", className: nameDirty ? "dirty" : "",
                             value: name, onChange: _this4.handleChange(key, idx, "name") }),
                         "$",
-                        _react2.default.createElement("input", { type: "number", min: "0.01", max: "1000.00", step: "0.01", className: priceDirty ? "dirty" : "",
+                        _react2.default.createElement("input", { type: "number", min: "0.01", max: "999.99", step: "0.01", className: priceDirty ? "dirty" : "",
                             value: price, onBlur: _this4.handlePriceBlur(key, idx, "price"),
                             onChange: _this4.handleChange(key, idx, "price") })
                     );
