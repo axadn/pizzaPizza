@@ -14,9 +14,8 @@ module.exports.fromName = function(name, done, onError){
     );
 }
 module.exports.update = function(params, done, onError){
-    debugger;
-    const name = params.name ? SqlString.escape(params.name) : "name";
-    const price = params.price ? SqlString.escape(params.price) : "price";
+    const name = params.hasOwnProperty("name") ? SqlString.escape(params.name) : "name";
+    const price = params.hasOwnProperty("price") ? SqlString.escape(params.price) : "price";
     db.get().query(
         `UPDATE sizes SET name = ${name}, price = ${price} WHERE id = ${params.id}`,
         (error, result, fields)=>{
