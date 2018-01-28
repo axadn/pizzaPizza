@@ -123,12 +123,10 @@ export default class Order extends React.Component{
             </div>
         ));
         return(
-        <div className="pizza-customization-form_group"> 
             <fieldSet className="toppings-select-fieldSet">
                 <legend>Choose your Toppings</legend>
                 {toppingBoxes}
             </fieldSet>
-        </div>
         );
     }
 

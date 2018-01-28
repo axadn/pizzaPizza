@@ -1,0 +1,14 @@
+{
+    "presets": ["es2015", "react", "airbnb"],
+    "plugins": [
+        ["module-resolver", {
+          "extensions": [".js", ".jsx"],
+          "alias": {
+            "Components": "./frontend/components/",
+            "Actions": "./frontend/actions/",
+            "Reducers": "./frontend/reducers/",
+            "Utils": "./frontend/utils/"
+          }
+        }]
+      ]
+  }
