@@ -4,7 +4,6 @@ const User = require("./api/user_utils");
 /* GET home page. */
 router.get('/', function(req, res, next) {
   User.currentUser(req, user=>{
-    debugger;
     let renderedUser;
     if(user){
       renderedUser = User.renderUser(user);

@@ -77,14 +77,11 @@ module.exports.isPassword = function isPassword(password, hash, done, onError){
 
 module.exports.create = function(params, done, onError){
     module.exports.generatePasswordDigest(params.password, digest=>{
-
         Session.generateSessionToken(token=>{
-    
             db.get().query(
                 SqlString.format("INSERT INTO users (username, password_digest, session_token, is_admin)" 
                 + "VALUES(?, ?, ?, ?)",[params.username, digest, token, params.is_admin]),
                 (error, result, fields)=>{
-            
                     if(error){
                         onError(error);
                     } 

@@ -12,17 +12,16 @@ export default class AdminDash extends React.Component{
         return Object.keys(this.props.toppings).length > 0 &&
         Object.keys(this.props.sizes).length > 0;
     }
-    freshState(props){
+    freshState(key, props){
         return{
-            sizes: this.formatCollection(this.sortSizes(props.sizes)),
-            sizesEdits: {},
-            toppings: this.formatCollection(this.sortToppings(props.toppings)),
-            toppingsEdits: {}     
+            [key]: this.formatCollection(this[`sort${key[0].toUpperCase() + key.slice(1)}`](props[key])),
+            [`${key}Edits`]: {}    
         };
     }
     componentWillMount(){
         if(this.loaded()){
-            this.setState(this.freshState(this.props));
+            this.setState(this.freshState("sizes", newProps));
+            this.setState(this.freshState("toppings", newProps));
         }
         if(Object.keys(this.props.toppings).length === 0){
             this.props.getSizes();
@@ -32,7 +31,10 @@ export default class AdminDash extends React.Component{
         }
     }
     componentWillReceiveProps(newProps){
-        this.setState(this.freshState(newProps));
+        if(JSON.stringify(newProps.sizes) !== JSON.stringify(this.props.sizes)){
+            this.setState(this.freshState("sizes", newProps));
+        }
+        else this.setState(this.freshState("toppings", newProps));
     }
     formatCollection(collection){
         let copy;
@@ -50,7 +52,6 @@ export default class AdminDash extends React.Component{
         return e=>{
             e.preventDefault();
             e.stopPropagation();
-            debugger;
             const newState = ({}, this.state);
             if(newState[editKey][key2]){
                 if(newState[key1][key2][key3]=== e.target.value){
@@ -136,7 +137,7 @@ export default class AdminDash extends React.Component{
                         <div className={`dashboard-${key}-edits-save-container`}>
                             <div><a className="dirty">{editsCount}</a> unsaved changes</div>
                             <button onClick={this.handleSubmit(key)} >Apply Changes</button>
-                            <button onClick={()=>this.setState(this.freshState(this.props))}> Revert</button>
+                            <button onClick={()=>this.setState(this.freshState(key, this.props))}> Revert</button>
                         </div>
                     :""}
         </fieldset>;  

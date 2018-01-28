@@ -25908,8 +25908,8 @@ var Order = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     "a",
-                    null,
-                    this.state.selectedSize ? this.formattedSizePrice() : ""
+                    { className: "selected" },
+                    this.state.selectedSize ? "$ " + this.formattedSizePrice() : ""
                 )
             );
         }
@@ -25924,16 +25924,20 @@ var Order = function (_React$Component) {
                     total += _this2.props.toppings[id].price;
                 });
                 return _react2.default.createElement(
-                    "div",
+                    "fieldSet",
                     { className: "pizza-checkout-container" },
+                    _react2.default.createElement(
+                        "legend",
+                        null,
+                        "Total"
+                    ),
                     _react2.default.createElement(
                         "div",
                         null,
-                        "Total: ",
                         _react2.default.createElement(
                             "a",
-                            null,
-                            (0, _string.formatPrice)(total)
+                            { className: "selected" },
+                            "$ " + (0, _string.formatPrice)(total)
                         )
                     ),
                     _react2.default.createElement(
@@ -25944,8 +25948,13 @@ var Order = function (_React$Component) {
                 );
             } else {
                 return _react2.default.createElement(
-                    "a",
-                    null,
+                    "fieldSet",
+                    { className: "pizza-checkout-container" },
+                    _react2.default.createElement(
+                        "legend",
+                        null,
+                        "Total"
+                    ),
                     "Please Select a Size"
                 );
             }
@@ -25968,8 +25977,8 @@ var Order = function (_React$Component) {
                         topping.name,
                         _react2.default.createElement(
                             "a",
-                            null,
-                            (0, _string.formatPrice)(topping.price)
+                            { className: !!_this3.state.selectedToppings[topping.id] ? "selected" : "" },
+                            "$ " + (0, _string.formatPrice)(topping.price)
                         )
                     )
                 );
@@ -26037,7 +26046,7 @@ exports.default = Order;
 
 
 Object.defineProperty(exports, "__esModule", {
-   value: true
+    value: true
 });
 
 var _react = __webpack_require__(0);
@@ -26053,21 +26062,25 @@ var _reactRouterDom = __webpack_require__(20);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (props) {
-   return _react2.default.createElement(
-      "div",
-      { className: "nav-bar-component" },
-      _react2.default.createElement(
-         _reactRouterDom.NavLink,
-         { to: "/" },
-         "Order"
-      ),
-      _react2.default.createElement(
-         _reactRouterDom.NavLink,
-         { to: "/cart" },
-         "Cart"
-      ),
-      _react2.default.createElement(_session_buttons_container2.default, null)
-   );
+    return _react2.default.createElement(
+        "div",
+        { className: "nav-bar-component" },
+        _react2.default.createElement(
+            "div",
+            { className: "nav-bar_left" },
+            _react2.default.createElement(
+                _reactRouterDom.NavLink,
+                { exact: true, to: "/" },
+                "Order"
+            ),
+            _react2.default.createElement(
+                _reactRouterDom.NavLink,
+                { exact: true, to: "/cart" },
+                _react2.default.createElement("i", { "class": "fa fa-shopping-cart", "aria-hidden": "true" })
+            )
+        ),
+        _react2.default.createElement(_session_buttons_container2.default, null)
+    );
 };
 
 /***/ }),
@@ -26093,6 +26106,8 @@ var _session_buttons = __webpack_require__(121);
 
 var _session_buttons2 = _interopRequireDefault(_session_buttons);
 
+var _reactRouterDom = __webpack_require__(20);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(state) {
@@ -26114,7 +26129,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         }
     };
 };
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_session_buttons2.default);
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_session_buttons2.default));
 
 /***/ }),
 /* 121 */
@@ -26168,7 +26183,7 @@ var SessionButtons = function (_React$Component) {
                     "!",
                     this.props.currentUser.is_admin ? _react2.default.createElement(
                         _reactRouterDom.NavLink,
-                        { to: "/dash" },
+                        { exact: true, to: "/dash" },
                         "Dashboard"
                     ) : "",
                     _react2.default.createElement(
@@ -27975,7 +27990,7 @@ var m = function (_React$Component) {
             }
             return _react2.default.createElement(
                 _reactModal2.default,
-                { isOpen: this.props.isOpen },
+                { isOpen: this.props.isOpen, className: "auth-modal", overlayClassName: "modal-overlay" },
                 _react2.default.createElement(_session_form_container2.default, null),
                 _react2.default.createElement(
                     "button",
@@ -27996,8 +28011,6 @@ var m = function (_React$Component) {
 
 exports.default = m;
 ;
-//className = "auth-modal"
-//overlayClassName = "modal-overlay"
 
 /***/ }),
 /* 151 */
@@ -30077,7 +30090,7 @@ var Cart = function (_React$Component) {
             var info = this.props.getPizzaInfo(pizza);
             return { jsx: _react2.default.createElement(
                     "div",
-                    { className: "cart-pizza-info" },
+                    { className: "cart-pizza-info_left" },
                     _react2.default.createElement(
                         "div",
                         null,
@@ -30096,8 +30109,8 @@ var Cart = function (_React$Component) {
                         " ",
                         _react2.default.createElement(
                             "a",
-                            null,
-                            (0, _string.formatPrice)(info.total)
+                            { className: "selected" },
+                            "$ " + (0, _string.formatPrice)(info.total)
                         )
                     )
                 ),
@@ -30118,7 +30131,7 @@ var Cart = function (_React$Component) {
                         total += pizzaInfo.total;
                         return _react2.default.createElement(
                             "li",
-                            { key: "cartItem" + idx },
+                            { key: "cartItem" + idx, className: "cart-pizza-info" },
                             pizzaInfo.jsx,
                             _react2.default.createElement(
                                 "button",
@@ -30162,8 +30175,8 @@ var Cart = function (_React$Component) {
                         " Total: ",
                         _react2.default.createElement(
                             "a",
-                            null,
-                            (0, _string.formatPrice)(pizzas.total)
+                            { className: "selected" },
+                            "$ " + (0, _string.formatPrice)(pizzas.total)
                         )
                     )
                 );
@@ -30231,12 +30244,12 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
                 return dispatch((0, _sizes.receiveSizes)(sizes));
             }));
         },
-        putToppings: function putToppings(queries) {
+        putToppings: function putToppings(queries, done) {
             return dispatch((0, _toppings.putToppings)(queries, function (success) {
                 dispatch((0, _toppings.updateToppings)(queries));
             }));
         },
-        putSizes: function putSizes(queries) {
+        putSizes: function putSizes(queries, done) {
             return dispatch((0, _sizes.putSizes)(queries, function (success) {
                 dispatch((0, _sizes.updateSizes)(queries));
             }));
@@ -30295,19 +30308,17 @@ var AdminDash = function (_React$Component) {
         }
     }, {
         key: "freshState",
-        value: function freshState(props) {
-            return {
-                sizes: this.formatCollection(this.sortSizes(props.sizes)),
-                sizesEdits: {},
-                toppings: this.formatCollection(this.sortToppings(props.toppings)),
-                toppingsEdits: {}
-            };
+        value: function freshState(key, props) {
+            var _ref;
+
+            return _ref = {}, _defineProperty(_ref, key, this.formatCollection(this["sort" + (key[0].toUpperCase() + key.slice(1))](props[key]))), _defineProperty(_ref, key + "Edits", {}), _ref;
         }
     }, {
         key: "componentWillMount",
         value: function componentWillMount() {
             if (this.loaded()) {
-                this.setState(this.freshState(this.props));
+                this.setState(this.freshState("sizes", newProps));
+                this.setState(this.freshState("toppings", newProps));
             }
             if (Object.keys(this.props.toppings).length === 0) {
                 this.props.getSizes();
@@ -30319,7 +30330,9 @@ var AdminDash = function (_React$Component) {
     }, {
         key: "componentWillReceiveProps",
         value: function componentWillReceiveProps(newProps) {
-            this.setState(this.freshState(newProps));
+            if (JSON.stringify(newProps.sizes) !== JSON.stringify(this.props.sizes)) {
+                this.setState(this.freshState("sizes", newProps));
+            } else this.setState(this.freshState("toppings", newProps));
         }
     }, {
         key: "formatCollection",
@@ -30343,7 +30356,6 @@ var AdminDash = function (_React$Component) {
             return function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                debugger;
                 var newState = ({}, _this2.state);
                 if (newState[editKey][key2]) {
                     if (newState[key1][key2][key3] === e.target.value) {
@@ -30466,7 +30478,7 @@ var AdminDash = function (_React$Component) {
                     _react2.default.createElement(
                         "button",
                         { onClick: function onClick() {
-                                return _this4.setState(_this4.freshState(_this4.props));
+                                return _this4.setState(_this4.freshState(key, _this4.props));
                             } },
                         " Revert"
                     )

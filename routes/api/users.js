@@ -48,7 +48,8 @@ function paramsErrors(username, password, done, onError){
 router.post('/', function(req, res, next){
     paramsErrors(req.body.username, req.body.password, errors=>{
         if(errors.length ===0){
-            User.create({username: req.body.username, password: req.body.password},
+            User.create({username: req.body.username, password: req.body.password,
+                            is_admin: false},
                 result=>{
                     res.cookie("session_token", result.token);
                     res.json({id: result.id});

@@ -84,7 +84,7 @@ export default class Order extends React.Component{
                         </option>
                     )}      
                 </select>
-                <a>{this.state.selectedSize? this.formattedSizePrice() : ""}</a>
+                <a className="selected">{this.state.selectedSize? `$ ${this.formattedSizePrice()}` : ""}</a>
             </fieldSet>
         );
     }
@@ -95,13 +95,17 @@ export default class Order extends React.Component{
             Object.keys(this.state.selectedToppings).forEach(id=>{
                 total += this.props.toppings[id].price;
             });
-           return <div className="pizza-checkout-container">
-               <div>Total: <a>{formatPrice(total)}</a></div>
+           return <fieldSet className="pizza-checkout-container">
+                <legend>Total</legend>
+               <div><a className="selected">{`$ ${formatPrice(total)}`}</a></div>
                <button onClick={this.handleSubmit}>Add To Cart</button>
-            </div>;
+            </fieldSet>;
         }
         else{
-            return <a>Please Select a Size</a>;
+            return <fieldSet className="pizza-checkout-container">
+            <legend>Total</legend>
+            Please Select a Size
+            </fieldSet>;
         }
     }
     generateToppingsSelect(){
@@ -111,7 +115,10 @@ export default class Order extends React.Component{
                  checked={!!this.state.selectedToppings[topping.id]}
                  onChange={this.handleToppingSelect} value={topping.id}/>
                 <label htmlFor={`toppingBox${topping.id}`}>
-                    {topping.name}<a>{formatPrice(topping.price)}</a>    
+                    {topping.name}
+                    <a className={!!this.state.selectedToppings[topping.id] ? "selected" : ""}>
+                        {`$ ${formatPrice(topping.price)}`}
+                    </a>    
                 </label>
             </div>
         ));

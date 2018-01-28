@@ -31,10 +31,10 @@ export default class Cart extends React.Component{
     }
     formatPizza(pizza){
         const info = this.props.getPizzaInfo(pizza);
-        return {jsx: <div className="cart-pizza-info">
+        return {jsx: <div className="cart-pizza-info_left">
             <div> {info.sizeName}</div>
             <div> {info.toppingNames.join(", ")}</div>
-            <div> <a>{formatPrice(info.total)}</a></div>
+            <div> <a className="selected">{`$ ${formatPrice(info.total)}`}</a></div>
         </div>,
         total: info.total};
     }
@@ -45,7 +45,7 @@ export default class Cart extends React.Component{
         {this.props.pizzas.map((pizza, idx)=>{
             pizzaInfo = this.formatPizza(pizza);
             total += pizzaInfo.total;
-            return <li key={`cartItem${idx}`}>
+            return <li key={`cartItem${idx}`} className="cart-pizza-info">
                 {pizzaInfo.jsx}
                 <button onClick ={this.handleDelete(idx)}>delete</button>
             </li>;
@@ -61,7 +61,7 @@ export default class Cart extends React.Component{
                 {pizzas.jsx}
                 <button onClick={e=> window.location="/#/"}>Add Pizza</button>
                 <button>Check out</button>
-                <div> Total: <a>{formatPrice(pizzas.total)}</a></div>
+                <div> Total: <a className="selected">{`$ ${formatPrice(pizzas.total)}`}</a></div>
             </div>;
         }
         else{

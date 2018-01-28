@@ -22,7 +22,7 @@ export default class m extends React.Component{
                 <li key={`modal-error-item${i}`}>{this.props.errors[i]}</li>
             );
         }
-       return <Modal isOpen={this.props.isOpen}>
+       return <Modal isOpen={this.props.isOpen} className = "auth-modal" overlayClassName = "modal-overlay">
             <SessionFormContainer/>
             <button onClick={this.handleClose} className="modal-exit">cancel</button>
             <ul className = "modal-errors">
@@ -31,5 +31,4 @@ export default class m extends React.Component{
         </Modal>;
     }
 };
-//className = "auth-modal"
-//overlayClassName = "modal-overlay" 
+ 

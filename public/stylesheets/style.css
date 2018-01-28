@@ -1,6 +1,15 @@
 body {
-  padding: 50px;
+  padding: 30px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+.main-content{
+  width: 100%;
+  max-width: 650px;
+}
+.app{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 a {
@@ -14,3 +23,80 @@ input.dirty{
 a.dirty{
   color: rgb(184, 93, 93);
 }
+
+.nav-bar-component{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nav-bar-component a{
+  margin: 3px;
+  padding: 3px;
+  text-decoration: none;
+}
+
+a.active{
+  background-color: rgb(221, 215, 205)
+}
+
+
+a.selected{
+  color: black;
+}
+
+.size-select-fieldSet a{
+  float: right;
+}
+
+.pizza-customization-form_group a{
+  float: right;
+}
+
+
+
+
+.cart-pizza-list{
+  padding: 10px 0 10px 0;
+}
+
+.cart-pizza-info{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 0 25px 0;
+}
+
+
+
+
+.auth-modal{
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  width: 400px;
+  height: 400px;
+  position: initial;
+}
+
+.modal-overlay{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(255, 255, 255, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

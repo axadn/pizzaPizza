@@ -12,13 +12,13 @@ const mapStateToProps = state=>({
 const mapDispatchToProps = dispatch=>({
     getToppings: () => dispatch(getToppings(toppings=>dispatch(receiveToppings(toppings)))),
     getSizes: () => dispatch(getSizes(sizes=>dispatch(receiveSizes(sizes)))),
-    putToppings: queries => dispatch(putToppings(
+    putToppings: (queries, done) => dispatch(putToppings(
         queries,
         success=>{
             dispatch(updateToppings(queries));
         }
     )),
-    putSizes: queries => dispatch(putSizes(
+    putSizes: (queries,done) => dispatch(putSizes(
         queries,
         success=>{
             dispatch(updateSizes(queries));
