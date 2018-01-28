@@ -15,6 +15,10 @@ Pizza Pizza is a pizza ordering application built with a Node.js backend and a R
   The default admin account is 
   * username: admin 
   * password: password
+  
+### Features:
+ * cookies to save cart when leaving site
+ * admin dashboard to change names and prices
 
 # Database Schema
 
