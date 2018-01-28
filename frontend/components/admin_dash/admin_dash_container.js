@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import AdminDash from "./admin_dash";
-import {getToppings, putToppings, receiveToppings} from "Actions/toppings";
-import {getSizes, putSizes, receiveSizes} from "Actions/sizes";
+import {getToppings, putToppings, receiveToppings, updateToppings} from "Actions/toppings";
+import {getSizes, putSizes, receiveSizes,updateSizes} from "Actions/sizes";
 import {toppings, sizes} from "Reducers/selectors";
 
 const mapStateToProps = state=>({
@@ -13,13 +13,15 @@ const mapDispatchToProps = dispatch=>({
     getToppings: () => dispatch(getToppings(toppings=>dispatch(receiveToppings(toppings)))),
     getSizes: () => dispatch(getSizes(sizes=>dispatch(receiveSizes(sizes)))),
     putToppings: queries => dispatch(putToppings(
+        queries,
         success=>{
-            updateToppings(queries);
+            dispatch(updateToppings(queries));
         }
     )),
-    putSizes: queries => dispatch(putToppings(
+    putSizes: queries => dispatch(putSizes(
+        queries,
         success=>{
-            updateSizes(queries);
+            dispatch(updateSizes(queries));
         }
     ))
 });

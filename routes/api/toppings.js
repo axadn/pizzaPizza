@@ -28,18 +28,18 @@ router.get("/", function(req,res,next){
 router.put("/", function(req, res, next){
     AdminUtils.adminRoute(req, res,
         authenticated=>{
-            const queries = req.body;
-            let composed = ()=> Toppings.update(queries.pop(), success=>{
+            const queries = Object.keys(req.body).map(key=>req.body[key]);
+            let composed = (query=>()=> Toppings.update(query, success=>{
                 res.json("success");
-            }, next);
+            }, next))(queries.pop());
             let query;
             while(queries.length > 0){
                 query = queries.pop();
-                composed = ((chain, query)=>{
+                composed = ((chain, query)=>
                     ()=> Toppings.update(query, success=>{
                         chain();
-                    }, next);
-                })(composed, query);
+                    }, next)
+                )(composed, query);
             }
             composed();
     }, next);

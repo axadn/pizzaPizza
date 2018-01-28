@@ -48,7 +48,6 @@ export default class AdminDash extends React.Component{
     handleChange(key1, key2, key3){
         const editKey = key1 + "Edits";
         return e=>{
-            debugger;
             e.preventDefault();
             e.stopPropagation();
             const newState = ({}, this.state);
@@ -69,9 +68,12 @@ export default class AdminDash extends React.Component{
         };
     }
     handleSubmit(key){
-        this.props["put"+key.slice(0,1).upperCase()+key.slice(1)](
-            this.state[key+"Edits"]
-        );  
+        return e=>{
+            debugger;
+            this.props["put"+key.slice(0,1).toUpperCase()+key.slice(1)](
+                this.state[key+"Edits"]
+            ); 
+        } 
     }
     handlePriceBlur(key1, key2, key3){
         const changeHandler = this.handleChange(key1,key2,key3);
@@ -123,7 +125,7 @@ export default class AdminDash extends React.Component{
             {editsCount > 0 ? 
                         <div className={`dashboard-${key}-edits-save-container`}>
                             <div><a className="dirty">{editsCount}</a> unsaved changes</div>
-                            <button >Apply Changes</button>
+                            <button onClick={this.handleSubmit(key)} >Apply Changes</button>
                             <button onClick={()=>this.setState(this.freshState(this.props))}> Revert</button>
                         </div>
                     :""}

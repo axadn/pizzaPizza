@@ -26523,7 +26523,7 @@ var getToppings = exports.getToppings = function getToppings(done, onError) {
 
 var putToppings = exports.putToppings = function putToppings(queries, done, onError) {
     return function (dispatch) {
-        put(queries).then(function (_ref2) {
+        (0, _toppings.put)(queries).then(function (_ref2) {
             var data = _ref2.data;
 
             if (data.errors) onError(data.errors);else done(data);
@@ -29807,7 +29807,7 @@ var get = exports.get = function get() {
   return _axios2.default.get("/api/sizes");
 };
 var put = exports.put = function put(queries) {
-  return _axios2.default.put("/api/sizes");
+  return _axios2.default.put("/api/sizes", queries);
 };
 
 /***/ }),
@@ -29832,7 +29832,7 @@ var get = exports.get = function get() {
   return _axios2.default.get("/api/toppings");
 };
 var put = exports.put = function put(queries) {
-  return _axios2.default.put("/api/toppings");
+  return _axios2.default.put("/api/toppings", queries);
 };
 
 /***/ }),
@@ -30206,13 +30206,13 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
             }));
         },
         putToppings: function putToppings(queries) {
-            return dispatch((0, _toppings.putToppings)(function (success) {
-                updateToppings(queries);
+            return dispatch((0, _toppings.putToppings)(queries, function (success) {
+                dispatch((0, _toppings.updateToppings)(queries));
             }));
         },
         putSizes: function putSizes(queries) {
-            return dispatch((0, _toppings.putToppings)(function (success) {
-                updateSizes(queries);
+            return dispatch((0, _sizes.putSizes)(queries, function (success) {
+                dispatch((0, _sizes.updateSizes)(queries));
             }));
         }
     };
@@ -30315,7 +30315,6 @@ var AdminDash = function (_React$Component) {
 
             var editKey = key1 + "Edits";
             return function (e) {
-                debugger;
                 e.preventDefault();
                 e.stopPropagation();
                 var newState = ({}, _this2.state);
@@ -30339,7 +30338,12 @@ var AdminDash = function (_React$Component) {
     }, {
         key: "handleSubmit",
         value: function handleSubmit(key) {
-            this.props["put" + key.slice(0, 1).upperCase() + key.slice(1)](this.state[key + "Edits"]);
+            var _this3 = this;
+
+            return function (e) {
+                debugger;
+                _this3.props["put" + key.slice(0, 1).toUpperCase() + key.slice(1)](_this3.state[key + "Edits"]);
+            };
         }
     }, {
         key: "handlePriceBlur",
@@ -30360,7 +30364,7 @@ var AdminDash = function (_React$Component) {
     }, {
         key: "renderEditGroup",
         value: function renderEditGroup(key) {
-            var _this3 = this;
+            var _this4 = this;
 
             var name = void 0,
                 price = void 0,
@@ -30378,16 +30382,16 @@ var AdminDash = function (_React$Component) {
                     key
                 ),
                 this.state[key].map(function (el, idx) {
-                    if (_this3.state[editKey][idx] && _this3.state[editKey][idx].name) {
-                        name = _this3.state[editKey][idx].name;
+                    if (_this4.state[editKey][idx] && _this4.state[editKey][idx].name) {
+                        name = _this4.state[editKey][idx].name;
                         nameDirty = true;
                         ++editsCount;
                     } else {
                         name = el.name;
                         nameDirty = false;
                     }
-                    if (_this3.state[editKey][idx] && _this3.state[editKey][idx].price) {
-                        price = _this3.state[editKey][idx].price;
+                    if (_this4.state[editKey][idx] && _this4.state[editKey][idx].price) {
+                        price = _this4.state[editKey][idx].price;
                         priceDirty = true;
                         ++editsCount;
                     } else {
@@ -30398,11 +30402,11 @@ var AdminDash = function (_React$Component) {
                         "div",
                         { className: "dashboard-" + key + "-edit-group", key: "size-" + key + "-group" + el.id },
                         _react2.default.createElement("input", { type: "text", className: nameDirty ? "dirty" : "",
-                            value: name, onChange: _this3.handleChange(key, idx, "name") }),
+                            value: name, onChange: _this4.handleChange(key, idx, "name") }),
                         "$",
                         _react2.default.createElement("input", { type: "number", min: "0.01", max: "1000.00", step: "0.01", className: priceDirty ? "dirty" : "",
-                            value: price, onBlur: _this3.handlePriceBlur(key, idx, "price"),
-                            onChange: _this3.handleChange(key, idx, "price") })
+                            value: price, onBlur: _this4.handlePriceBlur(key, idx, "price"),
+                            onChange: _this4.handleChange(key, idx, "price") })
                     );
                 }),
                 editsCount > 0 ? _react2.default.createElement(
@@ -30420,13 +30424,13 @@ var AdminDash = function (_React$Component) {
                     ),
                     _react2.default.createElement(
                         "button",
-                        null,
+                        { onClick: this.handleSubmit(key) },
                         "Apply Changes"
                     ),
                     _react2.default.createElement(
                         "button",
                         { onClick: function onClick() {
-                                return _this3.setState(_this3.freshState(_this3.props));
+                                return _this4.setState(_this4.freshState(_this4.props));
                             } },
                         " Revert"
                     )

@@ -13,11 +13,12 @@ module.exports.fromName = function(name, done, onError){
         }
     );
 }
-
-module.exports.update = function(id, params, done, onError){
+module.exports.update = function(params, done, onError){
+    debugger;
+    const name = params.name ? SqlString.escape(params.name) : "name";
+    const price = params.price ? SqlString.escape(params.price) : "price";
     db.get().query(
-        SqlString.format('UPDATE sizes SET name = ?, price = ? WHERE id = ?',
-        [params.name, params.price, id]),
+        `UPDATE sizes SET name = ${name}, price = ${price} WHERE id = ${params.id}`,
         (error, result, fields)=>{
             if(error){
                 onError(error);

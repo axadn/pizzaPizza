@@ -2,7 +2,7 @@ export const RECEIVE_TOPPINGS = "RECEIVE_TOPPINGS";
 export const REMOVE_TOPPING = "REMOVE_TOPPING";
 export const UPDATE_TOPPINGS = "UPDATE_TOPPINGS";
 export const ADD_TOPPING = "ADD_TOPPING";
-import {get} from "Utils/api/toppings";
+import {get, put} from "Utils/api/toppings";
 
 export const receiveToppings = toppings =>({
     toppings,
