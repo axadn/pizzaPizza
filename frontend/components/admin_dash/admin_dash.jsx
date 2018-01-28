@@ -6,7 +6,7 @@ export default class AdminDash extends React.Component{
     
     }
     componentDidMount(){
-
+        
     }
     renderSizesEdit(){
         return <fieldset></fieldset>
