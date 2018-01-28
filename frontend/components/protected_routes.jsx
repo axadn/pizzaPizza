@@ -3,7 +3,7 @@ import {withRouter, Route, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import React from "react";
 
-const ProtectedRoute = ({component: Component, path, loggedIn, currentUser})=>(
+const Protected = ({component: Component, path, loggedIn, currentUser})=>(
     <Route exact path={path} render={props=>(
         loggedIn ? (
             <Component {...props}/>
@@ -12,7 +12,7 @@ const ProtectedRoute = ({component: Component, path, loggedIn, currentUser})=>(
     )}/>
 );
 
-const AdminRoute = ({component: Component, path, currentUser}) =>(
+const Admin = ({component: Component, path, currentUser}) =>(
     <Route exact path={path} render={props=>{
         if(currentUser && currentUser.is_admin){
             return <Component {...props}/>;
@@ -25,7 +25,10 @@ const AdminRoute = ({component: Component, path, currentUser}) =>(
 const mapStateToProps = state =>(
     {
         loggedIn: loggedIn(state),
-        currentUser: curentUser(state)
+        currentUser: currentUser(state)
     }
 );
+
+export const AdminRoute = withRouter(connect(mapStateToProps)(Admin));
+export const ProtectedRoute = withRouter(connect(mapStateToProps)(Protected));
 
