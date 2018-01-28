@@ -30242,7 +30242,6 @@ var AdminDash = function (_React$Component) {
 
             var editKey = key1 + "Edits";
             return function (e) {
-                debugger;
                 e.preventDefault();
                 e.stopPropagation();
                 var newState = ({}, _this2.state);
@@ -30255,7 +30254,7 @@ var AdminDash = function (_React$Component) {
                     } else {
                         newState[editKey][key2][key3] = e.target.value;
                     }
-                } else {
+                } else if (e.target.value !== newState[key1][key2][key3]) {
                     newState[editKey][key2] = _defineProperty({}, key3, e.target.value);
                 }
                 _this2.setState(newState);

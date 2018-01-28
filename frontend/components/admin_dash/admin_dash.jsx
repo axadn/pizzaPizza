@@ -46,7 +46,6 @@ export default class AdminDash extends React.Component{
     handleChange(key1, key2, key3){
         const editKey = key1 + "Edits";
         return e=>{
-            debugger;
             e.preventDefault();
             e.stopPropagation();
             const newState = ({}, this.state);
@@ -60,7 +59,7 @@ export default class AdminDash extends React.Component{
                     newState[editKey][key2][key3] = e.target.value;
                 }
             }
-            else{
+            else if (e.target.value !== newState[key1][key2][key3]){
                 newState[editKey][key2] = {[key3]: e.target.value}
             }
             this.setState(newState);
