@@ -48,13 +48,14 @@ export default class AdminDash extends React.Component{
     handleChange(key1, key2, key3){
         const editKey = key1 + "Edits";
         return e=>{
+            debugger;
             e.preventDefault();
             e.stopPropagation();
             const newState = ({}, this.state);
             if(newState[editKey][key2]){
                 if(newState[key1][key2][key3]=== e.target.value){
                     delete newState[editKey][key2][key3];
-                    if(Object.keys(newState[editKey][key2]).length === 0){
+                    if(Object.keys(newState[editKey][key2]).length === 1){
                         delete newState[editKey][key2];
                     }
                 }else{
@@ -62,17 +63,15 @@ export default class AdminDash extends React.Component{
                 }
             }
             else if (e.target.value !== newState[key1][key2][key3]){
-                newState[editKey][key2] = {[key3]: e.target.value}
+                newState[editKey][key2] = {[key3]: e.target.value, id:newState[key1][key2].id}
             }
             this.setState(newState);
         };
     }
-    handleSubmit(key){  
-        const editKey = key + "Edits";
-        switch(key){
-            case "sizes":
-            case "toppings":
-        }
+    handleSubmit(key){
+        this.props["put"+key.slice(0,1).upperCase()+key.slice(1)](
+            this.state[key+"Edits"]
+        );  
     }
     handlePriceBlur(key1, key2, key3){
         const changeHandler = this.handleChange(key1,key2,key3);
@@ -152,7 +151,5 @@ export default class AdminDash extends React.Component{
                 Loading...
             </div>
         }
-        
     }
-
 }

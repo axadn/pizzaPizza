@@ -26330,11 +26330,22 @@ exports.default = function () {
     switch (action.type) {
         case _sizes.RECEIVE_SIZES:
             return action.sizes;
+        case _sizes.UPDATE_SIZES:
+            {
+                var copy = Object.assign({}, state);
+                action.queries.forEach(function (query) {
+                    copy[query.id] = Object.assign({}, copy[query.id], query);
+                });
+                return copy;
+            }
         case _sizes.ADD_SIZE:
             return Object.assign({}, state, _defineProperty({}, action.size.id, action.size));
         case _sizes.REMOVE_SIZE:
-            var copy = Object.assign({}, state);
-            delete copy[action.id];
+            {
+                var _copy = Object.assign({}, state);
+                delete _copy[action.id];
+                return _copy;
+            }
         default:
             return state;
     }
@@ -26350,17 +26361,24 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.putSizes = exports.getSizes = exports.addSize = exports.removeSize = exports.receiveSizes = exports.ADD_SIZE = exports.REMOVE_SIZE = exports.RECEIVE_SIZES = undefined;
+exports.putSizes = exports.getSizes = exports.addSize = exports.removeSize = exports.updateSizes = exports.receiveSizes = exports.ADD_SIZE = exports.UPDATE_SIZES = exports.REMOVE_SIZE = exports.RECEIVE_SIZES = undefined;
 
 var _sizes = __webpack_require__(182);
 
 var RECEIVE_SIZES = exports.RECEIVE_SIZES = "RECEIVE_SIZES";
 var REMOVE_SIZE = exports.REMOVE_SIZE = "REMOVE_SIZE";
+var UPDATE_SIZES = exports.UPDATE_SIZES = "UPDATE_SIZES";
 var ADD_SIZE = exports.ADD_SIZE = "ADD_SIZE";
 var receiveSizes = exports.receiveSizes = function receiveSizes(sizes) {
     return {
         sizes: sizes,
         type: RECEIVE_SIZES
+    };
+};
+var updateSizes = exports.updateSizes = function updateSizes(queries) {
+    return {
+        queries: queries,
+        type: UPDATE_SIZES
     };
 };
 
@@ -26424,11 +26442,22 @@ exports.default = function () {
     switch (action.type) {
         case _toppings.RECEIVE_TOPPINGS:
             return action.toppings;
+        case _toppings.UPDATE_TOPPINGS:
+            {
+                var copy = Object.assign({}, state);
+                action.queries.forEach(function (query) {
+                    copy[query.id] = Object.assign({}, copy[query.id], query);
+                });
+                return copy;
+            }
         case _toppings.ADD_TOPPING:
             return Object.assign({}, state, _defineProperty({}, action.topping.id, action.topping));
         case _toppings.REMOVE_TOPPING:
-            var copy = Object.assign({}, state);
-            delete copy[action.id];
+            {
+                var _copy = Object.assign({}, state);
+                delete _copy[action.id];
+                return _copy;
+            }
         default:
             return state;
     }
@@ -26444,12 +26473,13 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.putToppings = exports.getToppings = exports.addTopping = exports.removeTopping = exports.receiveToppings = exports.ADD_TOPPING = exports.REMOVE_TOPPING = exports.RECEIVE_TOPPINGS = undefined;
+exports.putToppings = exports.getToppings = exports.addTopping = exports.removeTopping = exports.updateToppings = exports.receiveToppings = exports.ADD_TOPPING = exports.UPDATE_TOPPINGS = exports.REMOVE_TOPPING = exports.RECEIVE_TOPPINGS = undefined;
 
 var _toppings = __webpack_require__(183);
 
 var RECEIVE_TOPPINGS = exports.RECEIVE_TOPPINGS = "RECEIVE_TOPPINGS";
 var REMOVE_TOPPING = exports.REMOVE_TOPPING = "REMOVE_TOPPING";
+var UPDATE_TOPPINGS = exports.UPDATE_TOPPINGS = "UPDATE_TOPPINGS";
 var ADD_TOPPING = exports.ADD_TOPPING = "ADD_TOPPING";
 var receiveToppings = exports.receiveToppings = function receiveToppings(toppings) {
     return {
@@ -26457,7 +26487,12 @@ var receiveToppings = exports.receiveToppings = function receiveToppings(topping
         type: RECEIVE_TOPPINGS
     };
 };
-
+var updateToppings = exports.updateToppings = function updateToppings(queries) {
+    return {
+        queries: queries,
+        type: UPDATE_TOPPINGS
+    };
+};
 var removeTopping = exports.removeTopping = function removeTopping(id) {
     return {
         toppings: toppings,
@@ -30169,6 +30204,16 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
             return dispatch((0, _sizes.getSizes)(function (sizes) {
                 return dispatch((0, _sizes.receiveSizes)(sizes));
             }));
+        },
+        putToppings: function putToppings(queries) {
+            return dispatch((0, _toppings.putToppings)(function (success) {
+                updateToppings(queries);
+            }));
+        },
+        putSizes: function putSizes(queries) {
+            return dispatch((0, _toppings.putToppings)(function (success) {
+                updateSizes(queries);
+            }));
         }
     };
 };
@@ -30270,20 +30315,23 @@ var AdminDash = function (_React$Component) {
 
             var editKey = key1 + "Edits";
             return function (e) {
+                debugger;
                 e.preventDefault();
                 e.stopPropagation();
                 var newState = ({}, _this2.state);
                 if (newState[editKey][key2]) {
                     if (newState[key1][key2][key3] === e.target.value) {
                         delete newState[editKey][key2][key3];
-                        if (Object.keys(newState[editKey][key2]).length === 0) {
+                        if (Object.keys(newState[editKey][key2]).length === 1) {
                             delete newState[editKey][key2];
                         }
                     } else {
                         newState[editKey][key2][key3] = e.target.value;
                     }
                 } else if (e.target.value !== newState[key1][key2][key3]) {
-                    newState[editKey][key2] = _defineProperty({}, key3, e.target.value);
+                    var _newState$editKey$key;
+
+                    newState[editKey][key2] = (_newState$editKey$key = {}, _defineProperty(_newState$editKey$key, key3, e.target.value), _defineProperty(_newState$editKey$key, "id", newState[key1][key2].id), _newState$editKey$key);
                 }
                 _this2.setState(newState);
             };
@@ -30291,11 +30339,7 @@ var AdminDash = function (_React$Component) {
     }, {
         key: "handleSubmit",
         value: function handleSubmit(key) {
-            var editKey = key + "Edits";
-            switch (key) {
-                case "sizes":
-                case "toppings":
-            }
+            this.props["put" + key.slice(0, 1).upperCase() + key.slice(1)](this.state[key + "Edits"]);
         }
     }, {
         key: "handlePriceBlur",

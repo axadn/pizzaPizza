@@ -28,7 +28,7 @@ router.get("/", function(req,res,next){
 router.put("/", function(req, res, next){
     AdminUtils.adminRoute(req, res,
         authenticated=>{
-            const queries = req.body.queries;
+            const queries = req.body;
             let composed = ()=> Toppings.update(queries.pop(), success=>{
                 res.json("success");
             }, next);

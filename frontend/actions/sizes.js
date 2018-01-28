@@ -1,11 +1,16 @@
 export const RECEIVE_SIZES = "RECEIVE_SIZES";
 export const REMOVE_SIZE = "REMOVE_SIZE";
+export const UPDATE_SIZES = "UPDATE_SIZES";
 export const ADD_SIZE = "ADD_SIZE";
 import {get, put} from "Utils/api/sizes";
 
 export const receiveSizes = sizes =>({
     sizes,
     type: RECEIVE_SIZES
+});
+export const updateSizes = queries =>({
+    queries,
+    type: UPDATE_SIZES
 });
 
 export const removeSize = id =>({
