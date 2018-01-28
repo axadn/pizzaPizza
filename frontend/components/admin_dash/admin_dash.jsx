@@ -71,7 +71,7 @@ export default class AdminDash extends React.Component{
         return e=>{
             debugger;
             this.props["put"+key.slice(0,1).toUpperCase()+key.slice(1)](
-                this.state[key+"Edits"]
+                Object.values(this.state[key+"Edits"])
             ); 
         } 
     }

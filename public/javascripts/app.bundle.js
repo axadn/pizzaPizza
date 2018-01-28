@@ -30342,7 +30342,7 @@ var AdminDash = function (_React$Component) {
 
             return function (e) {
                 debugger;
-                _this3.props["put" + key.slice(0, 1).toUpperCase() + key.slice(1)](_this3.state[key + "Edits"]);
+                _this3.props["put" + key.slice(0, 1).toUpperCase() + key.slice(1)](Object.values(_this3.state[key + "Edits"]));
             };
         }
     }, {
