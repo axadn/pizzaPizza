@@ -4,7 +4,7 @@ Pizza Pizza is a pizza ordering application built with a Node.js backend and a R
 ##### How to run the project on your own machine:
   * set database credentials in dbConfig.js
   * make sure mysql is running
-  * open a terminal in the project root
+  * open a terminal in the project directory
   * run the following commands:
 ````
      node createDatabase.js
