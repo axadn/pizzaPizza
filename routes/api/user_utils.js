@@ -10,6 +10,7 @@ module.exports.fromSessionToken = function fromSessionToken(token, done, onError
     db.get().query(
         SqlString.format('SELECT * FROM users WHERE session_token = ?', [token]),
         (error, result, fields) =>{
+    
             if(error){
                 OnError(error);
             }else done(result[0]);
@@ -24,24 +25,22 @@ module.exports.currentUser = function(req, done, onError){
 };
 
 module.exports.setSessionToken = function (id, token, done, onError){
-    Session.generateSessionToken(token=>{
-        db.get().query(
-            SqlString.format("UPDATE users SET session_token = ? WHERE id = ?",
-                [token, id]),
-            (error, result, fields)=>{
-                if(error){
-                    onError(error);
-                }
-                else{
-                    done(token);
-                }
+    db.get().query(
+        SqlString.format("UPDATE users SET session_token = ? WHERE id = ?",
+            [token, id]),
+        (error, result, fields)=>{
+            if(error){
+                onError(error);
             }
-        );
-    });
+            else{
+                done(token);
+            }
+        }
+    );
 };
 
 module.exports.resetSessionToken = function resetSessionToken(id, done, onError){
-    Session.generateSessionToken(token=>{
+    Session.generateSessionToken(token=>{   
         module.exports.setSessionToken(id, token, 
             success=>{
                 done(token);
