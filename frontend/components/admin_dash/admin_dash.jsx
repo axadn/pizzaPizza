@@ -69,7 +69,6 @@ export default class AdminDash extends React.Component{
     }
     handleSubmit(key){
         return e=>{
-            debugger;
             this.props["put"+key.slice(0,1).toUpperCase()+key.slice(1)](
                 Object.values(this.state[key+"Edits"])
             ); 

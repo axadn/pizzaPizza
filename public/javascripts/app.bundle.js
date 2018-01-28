@@ -30341,7 +30341,6 @@ var AdminDash = function (_React$Component) {
             var _this3 = this;
 
             return function (e) {
-                debugger;
                 _this3.props["put" + key.slice(0, 1).toUpperCase() + key.slice(1)](Object.values(_this3.state[key + "Edits"]));
             };
         }
