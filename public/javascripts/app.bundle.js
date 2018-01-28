@@ -26025,7 +26025,7 @@ exports.default = Order;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+   value: true
 });
 
 var _react = __webpack_require__(0);
@@ -26036,14 +26036,26 @@ var _session_buttons_container = __webpack_require__(120);
 
 var _session_buttons_container2 = _interopRequireDefault(_session_buttons_container);
 
+var _reactRouterDom = __webpack_require__(20);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (props) {
-  return _react2.default.createElement(
-    "div",
-    { className: "nav-bar-component" },
-    _react2.default.createElement(_session_buttons_container2.default, null)
-  );
+   return _react2.default.createElement(
+      "div",
+      { className: "nav-bar-component" },
+      _react2.default.createElement(
+         _reactRouterDom.NavLink,
+         { to: "/" },
+         "Order"
+      ),
+      _react2.default.createElement(
+         _reactRouterDom.NavLink,
+         { to: "/cart" },
+         "Cart"
+      ),
+      _react2.default.createElement(_session_buttons_container2.default, null)
+   );
 };
 
 /***/ }),
@@ -26109,6 +26121,8 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(20);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26140,6 +26154,11 @@ var SessionButtons = function (_React$Component) {
                         this.props.currentUser.username
                     ),
                     "!",
+                    this.props.currentUser.is_admin ? _react2.default.createElement(
+                        _reactRouterDom.NavLink,
+                        { to: "/dash" },
+                        "Dashboard"
+                    ) : "",
                     _react2.default.createElement(
                         "button",
                         { onClick: this.props.logout },
@@ -30223,6 +30242,7 @@ var AdminDash = function (_React$Component) {
 
             var editKey = key1 + "Edits";
             return function (e) {
+                debugger;
                 e.preventDefault();
                 e.stopPropagation();
                 var newState = ({}, _this2.state);
@@ -30244,6 +30264,17 @@ var AdminDash = function (_React$Component) {
     }, {
         key: "handleSubmit",
         value: function handleSubmit(e) {}
+    }, {
+        key: "handlePriceBlur",
+        value: function handlePriceBlur(key1, key2, key3) {
+            var changeHandler = this.handleChange(key1, key2, key3);
+            return function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                e.target.value = parseFloat(e.target.value).toFixed(2);
+                changeHandler(e);
+            };
+        }
     }, {
         key: "loaded",
         value: function loaded() {
@@ -30293,7 +30324,7 @@ var AdminDash = function (_React$Component) {
                             value: name, onChange: _this3.handleChange(key, idx, "name") }),
                         "$",
                         _react2.default.createElement("input", { type: "number", min: "0.01", max: "1000.00", step: "0.01", className: priceDirty ? "dirty" : "",
-                            value: price, onBlur: _this3.handlePriceInput,
+                            value: price, onBlur: _this3.handlePriceBlur(key, idx, "price"),
                             onChange: _this3.handleChange(key, idx, "price") })
                     );
                 }),

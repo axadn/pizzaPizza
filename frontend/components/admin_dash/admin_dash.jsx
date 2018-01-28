@@ -46,6 +46,7 @@ export default class AdminDash extends React.Component{
     handleChange(key1, key2, key3){
         const editKey = key1 + "Edits";
         return e=>{
+            debugger;
             e.preventDefault();
             e.stopPropagation();
             const newState = ({}, this.state);
@@ -67,6 +68,15 @@ export default class AdminDash extends React.Component{
     }
     handleSubmit(e){
 
+    }
+    handlePriceBlur(key1, key2, key3){
+        const changeHandler = this.handleChange(key1,key2,key3);
+        return e=>{
+            e.stopPropagation();
+            e.preventDefault();
+            e.target.value = parseFloat(e.target.value).toFixed(2);
+            changeHandler(e);
+        }
     }
     loaded(){
         return Object.keys(this.props.toppings).length > 0 &&
@@ -102,7 +112,7 @@ export default class AdminDash extends React.Component{
                      value={name} onChange={this.handleChange(key,idx,"name")}/>
                     $
                     <input type="number" min="0.01" max="1000.00" step="0.01" className={priceDirty? "dirty": ""} 
-                        value={price} onBlur={this.handlePriceInput} 
+                        value={price} onBlur={this.handlePriceBlur(key,idx,"price")} 
                         onChange={this.handleChange(key,idx,"price")}/>
                 </div>;
             })}

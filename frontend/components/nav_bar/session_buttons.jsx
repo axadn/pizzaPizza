@@ -1,4 +1,5 @@
 import React from "react";
+import {NavLink} from "react-router-dom";
 
 export default class SessionButtons extends React.Component{
     constructor(props){
@@ -8,6 +9,9 @@ export default class SessionButtons extends React.Component{
         if(this.props.currentUser){
             return <div className="user-button">
                 Hello, <a>{this.props.currentUser.username}</a>!
+                {this.props.currentUser.is_admin ?
+                 <NavLink to="/dash">Dashboard</NavLink>
+                :""}
                 <button onClick={this.props.logout}>
                     log out
                 </button>
