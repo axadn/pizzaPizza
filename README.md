@@ -1,6 +1,17 @@
 
 Pizza Pizza is a pizza ordering application built with a Node.js backend and a React.js front end.
 
+How to set up the project:
+  set database credentials in dbConfig.js
+  make sure mysql is running
+  open a terminal in the project root
+  run the following commands:
+       node createDatabase.js
+       node seed.js
+       node app.js
+       
+  The default admin account is username: admin, password: password
+
 # Database Schema
 
 ## `users`
