@@ -32,6 +32,12 @@ export default class Order extends React.Component{
             this.props.getToppings();
         }
     }
+    componentWillReceiveProps(newProps){
+        this.setState({
+            sizes: this.sortSizes(newProps.sizes),
+            toppings: this.sortToppings(newProps.toppings)        
+        });
+    }
     sortSizes(sizes){
         return Object.keys(sizes).map(id=>sizes[id]).sort((sizeA, sizeB)=>
             (sizeA.price < sizeB.price)? -1 : 1 
@@ -59,13 +65,6 @@ export default class Order extends React.Component{
         return Object.keys(toppings).map(id=>toppings[id]).sort((toppingA, toppingB)=>
             (toppingA.name < toppingB.name)? -1 : 1
         );
-    }
-
-    componentWillReceiveProps(newProps){
-        this.setState({
-            sizes: this.sortSizes(newProps.sizes),
-            toppings: this.sortToppings(newProps.toppings)        
-        });
     }
     
     formattedSizePrice(){

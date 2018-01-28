@@ -25813,6 +25813,14 @@ var Order = function (_React$Component) {
             }
         }
     }, {
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(newProps) {
+            this.setState({
+                sizes: this.sortSizes(newProps.sizes),
+                toppings: this.sortToppings(newProps.toppings)
+            });
+        }
+    }, {
         key: "sortSizes",
         value: function sortSizes(sizes) {
             return Object.keys(sizes).map(function (id) {
@@ -25851,14 +25859,6 @@ var Order = function (_React$Component) {
                 return toppings[id];
             }).sort(function (toppingA, toppingB) {
                 return toppingA.name < toppingB.name ? -1 : 1;
-            });
-        }
-    }, {
-        key: "componentWillReceiveProps",
-        value: function componentWillReceiveProps(newProps) {
-            this.setState({
-                sizes: this.sortSizes(newProps.sizes),
-                toppings: this.sortToppings(newProps.toppings)
             });
         }
     }, {
@@ -30095,7 +30095,7 @@ exports.default = Cart;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _reactRedux = __webpack_require__(16);
@@ -30104,14 +30104,34 @@ var _admin_dash = __webpack_require__(189);
 
 var _admin_dash2 = _interopRequireDefault(_admin_dash);
 
+var _toppings = __webpack_require__(129);
+
+var _sizes = __webpack_require__(127);
+
+var _selectors = __webpack_require__(49);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(state) {
-  return {};
+    return {
+        toppings: (0, _selectors.toppings)(state),
+        sizes: (0, _selectors.sizes)(state)
+    };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {};
+    return {
+        getToppings: function getToppings() {
+            return dispatch((0, _toppings.getToppings)(function (toppings) {
+                return dispatch((0, _toppings.receiveToppings)(toppings));
+            }));
+        },
+        getSizes: function getSizes() {
+            return dispatch((0, _sizes.getSizes)(function (sizes) {
+                return dispatch((0, _sizes.receiveSizes)(sizes));
+            }));
+        }
+    };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_admin_dash2.default);
@@ -30151,12 +30171,77 @@ var AdminDash = function (_React$Component) {
     }
 
     _createClass(AdminDash, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {}
+        key: "loaded",
+        value: function loaded() {
+            return Object.keys(this.props.toppings).length > 0 && Object.keys(this.props.sizes).length > 0;
+        }
+    }, {
+        key: "componentWillMount",
+        value: function componentWillMount() {
+            if (this.loaded()) {
+                this.setState({
+                    sizes: this.sortSizes(this.props.sizes),
+                    toppings: this.sortToppings(this.props.toppings)
+                });
+            }
+            if (Object.keys(this.props.toppings).length === 0) {
+                this.props.getSizes();
+            }
+            if (Object.keys(this.props.sizes).length === 0) {
+                this.props.getToppings();
+            }
+        }
+    }, {
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(newProps) {
+            this.setState({
+                sizes: this.sortSizes(newProps.sizes),
+                toppings: this.sortToppings(newProps.toppings)
+            });
+        }
+    }, {
+        key: "handleToppingSubmit",
+        value: function handleToppingSubmit(e) {}
+    }, {
+        key: "handleSizeSubmit",
+        value: function handleSizeSubmit(e) {}
+    }, {
+        key: "loaded",
+        value: function loaded() {
+            return Object.keys(this.props.toppings).length > 0 && Object.keys(this.props.sizes).length > 0;
+        }
     }, {
         key: "renderSizesEdit",
         value: function renderSizesEdit() {
-            return _react2.default.createElement("fieldset", null);
+            return _react2.default.createElement(
+                "fieldset",
+                null,
+                this.state.sizes.map(function (size) {
+                    _react2.default.createElement(
+                        "div",
+                        { className: "dashboard-size-edit-group" },
+                        _react2.default.createElement("input", { type: "number", min: "0.00", max: "10000.00", step: "0.01" })
+                    );
+                })
+            );
+        }
+    }, {
+        key: "sortToppings",
+        value: function sortToppings(toppings) {
+            return Object.keys(toppings).map(function (id) {
+                return toppings[id];
+            }).sort(function (toppingA, toppingB) {
+                return toppingA.name < toppingB.name ? -1 : 1;
+            });
+        }
+    }, {
+        key: "sortSizes",
+        value: function sortSizes(sizes) {
+            return Object.keys(sizes).map(function (id) {
+                return sizes[id];
+            }).sort(function (sizeA, sizeB) {
+                return sizeA.price < sizeB.price ? -1 : 1;
+            });
         }
     }, {
         key: "renderToppingsEdit",
@@ -30166,7 +30251,19 @@ var AdminDash = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            return _react2.default.createElement("div", { className: "admin-dash-component" });
+            if (this.loaded()) {
+                return _react2.default.createElement(
+                    "div",
+                    { className: "admin-dash-component" },
+                    this.renderSizesEdit()
+                );
+            } else {
+                return _react2.default.createElement(
+                    "div",
+                    { className: "admin-dash-component" },
+                    "Loading..."
+                );
+            }
         }
     }]);
 
