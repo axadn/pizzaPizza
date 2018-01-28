@@ -29905,7 +29905,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var formatPrice = exports.formatPrice = function formatPrice(price) {
-  return price.toFixed(2);
+  return !!price.toFixed ? price.toFixed(2) : price;
 };
 
 /***/ }),
@@ -30341,7 +30341,14 @@ var AdminDash = function (_React$Component) {
             var _this3 = this;
 
             return function (e) {
-                _this3.props["put" + key.slice(0, 1).toUpperCase() + key.slice(1)](Object.values(_this3.state[key + "Edits"]));
+                _this3.props["put" + key.slice(0, 1).toUpperCase() + key.slice(1)](Object.values(_this3.state[key + "Edits"]).map(function (query) {
+                    if (query.price) {
+                        //make sure prices are stored as numbers in redux store, for price totaling
+                        var copy = Object.assign({}, query);
+                        copy.price = Number(copy.price);
+                        return copy;
+                    } else return query;
+                }));
             };
         }
     }, {

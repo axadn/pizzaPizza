@@ -1,1 +1,1 @@
-export const formatPrice = price=> price.toFixed(2);
+export const formatPrice = price=>(!!price.toFixed) ? price.toFixed(2): price;

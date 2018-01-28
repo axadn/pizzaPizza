@@ -70,7 +70,14 @@ export default class AdminDash extends React.Component{
     handleSubmit(key){
         return e=>{
             this.props["put"+key.slice(0,1).toUpperCase()+key.slice(1)](
-                Object.values(this.state[key+"Edits"])
+                Object.values(this.state[key+"Edits"]).map(query=>{
+                    if(query.price){ //make sure prices are stored as numbers in redux store, for price totaling
+                        const copy = Object.assign({}, query);
+                        copy.price = Number(copy.price);
+                        return copy;
+                    }
+                    else return query; 
+                })
             ); 
         } 
     }

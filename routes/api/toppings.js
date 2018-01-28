@@ -3,8 +3,8 @@ const router = express.Router();
 const db = require("../../db");
 const SqlString = require('sqlstring');
 const AdminUtils = require('./admin_utils');
-const Toppings = require("./topping_utils");
 
+const Toppings = require("./topping_utils");
 router.post("/", function(req,res,next){
     AdminUtils.adminRoute(req,res,
         authenticated =>{
