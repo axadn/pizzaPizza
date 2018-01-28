@@ -25779,10 +25779,25 @@ var Order = function (_React$Component) {
     }
 
     _createClass(Order, [{
+        key: "loaded",
+        value: function loaded() {
+            return Object.keys(this.props.toppings).length > 0 && Object.keys(this.props.sizes).length > 0;
+        }
+    }, {
         key: "componentWillMount",
         value: function componentWillMount() {
-            this.props.getSizes();
-            this.props.getToppings();
+            if (this.loaded()) {
+                this.setState({
+                    sizes: this.sortSizes(this.props.sizes),
+                    toppings: this.sortToppings(this.props.toppings)
+                });
+            }
+            if (Object.keys(this.props.toppings).length === 0) {
+                this.props.getSizes();
+            }
+            if (Object.keys(this.props.sizes).length === 0) {
+                this.props.getToppings();
+            }
         }
     }, {
         key: "sortSizes",
@@ -25952,22 +25967,35 @@ var Order = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            return _react2.default.createElement(
-                "div",
-                { className: "order-component" },
-                _react2.default.createElement(
-                    "h2",
-                    null,
-                    " Order a Pizza"
-                ),
-                _react2.default.createElement(
-                    "form",
-                    { className: "pizza-customization-form" },
-                    this.generateSizeSelect(),
-                    this.generateToppingsSelect()
-                ),
-                this.renderCheckout()
-            );
+            if (this.loaded()) {
+                return _react2.default.createElement(
+                    "div",
+                    { className: "order-component" },
+                    _react2.default.createElement(
+                        "h2",
+                        null,
+                        " Order a Pizza"
+                    ),
+                    _react2.default.createElement(
+                        "form",
+                        { className: "pizza-customization-form" },
+                        this.generateSizeSelect(),
+                        this.generateToppingsSelect()
+                    ),
+                    this.renderCheckout()
+                );
+            } else {
+                return _react2.default.createElement(
+                    "div",
+                    { className: "order-component" },
+                    _react2.default.createElement(
+                        "h2",
+                        null,
+                        " Order a Pizza"
+                    ),
+                    "Loading ..."
+                );
+            }
         }
     }]);
 
@@ -29899,8 +29927,8 @@ var Cart = function (_React$Component) {
     }
 
     _createClass(Cart, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
+        key: "componentWillMount",
+        value: function componentWillMount() {
             if (Object.keys(this.props.toppings).length === 0) {
                 this.props.getSizes(this.handleDataLoaded);
             }

@@ -6,7 +6,7 @@ export default class Cart extends React.Component{
         super(props);
         this.handleDelete = this.handleDelete.bind(this);
     }
-    componentDidMount(){
+    componentWillMount(){
         if(Object.keys(this.props.toppings).length === 0){
             this.props.getSizes(this.handleDataLoaded);
         }

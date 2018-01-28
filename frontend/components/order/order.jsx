@@ -14,10 +14,23 @@ export default class Order extends React.Component{
         this.handleToppingSelect = this.handleToppingSelect.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
+    loaded(){
+        return Object.keys(this.props.toppings).length > 0 &&
+        Object.keys(this.props.sizes).length > 0;
+    }
     componentWillMount(){
-        this.props.getSizes();
-        this.props.getToppings();
+        if(this.loaded()){
+            this.setState({
+                sizes: this.sortSizes(this.props.sizes),
+                toppings: this.sortToppings(this.props.toppings)        
+            });
+        }
+        if(Object.keys(this.props.toppings).length === 0){
+            this.props.getSizes();
+        }
+        if(Object.keys(this.props.sizes).length === 0){
+            this.props.getToppings();
+        }
     }
     sortSizes(sizes){
         return Object.keys(sizes).map(id=>sizes[id]).sort((sizeA, sizeB)=>
@@ -115,15 +128,25 @@ export default class Order extends React.Component{
 
 
     render(){
-        return(
-            <div className= "order-component">
-                <h2> Order a Pizza</h2>
-                <form className="pizza-customization-form">
-                    {this.generateSizeSelect()}
-                    {this.generateToppingsSelect()}
-                </form>
-                {this.renderCheckout()}    
-            </div>
-        );
+        if(this.loaded()){
+            return(
+                <div className= "order-component">
+                    <h2> Order a Pizza</h2>
+                    <form className="pizza-customization-form">
+                        {this.generateSizeSelect()}
+                        {this.generateToppingsSelect()}
+                    </form>
+                    {this.renderCheckout()}    
+                </div>
+            );
+        }
+        else{
+            return(
+                <div className= "order-component">
+                    <h2> Order a Pizza</h2>
+                    Loading ...  
+                </div>
+            );
+        }
     }
 }
