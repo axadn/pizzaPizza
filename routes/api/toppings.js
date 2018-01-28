@@ -25,12 +25,23 @@ router.get("/", function(req,res,next){
     }, next);
 });
 
-router.put("/:id", function(req, res, next){
+router.put("/", function(req, res, next){
     AdminUtils.adminRoute(req, res,
         authenticated=>{
-            Toppings.update(req.params.id, req.body, success=>{
+            const queries = req.body.queries;
+            let composed = ()=> Toppings.update(queries.pop(), success=>{
                 res.json("success");
             }, next);
+            let query;
+            while(queries.length > 0){
+                query = queries.pop();
+                composed = ((chain, query)=>{
+                    ()=> Toppings.update(query, success=>{
+                        chain();
+                    }, next);
+                })(composed, query);
+            }
+            composed();
     }, next);
 });
 

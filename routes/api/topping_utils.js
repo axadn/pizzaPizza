@@ -1,10 +1,11 @@
 const db = require("../../db");
 const SqlString = require('sqlstring');
 
-module.exports.update = function(id, params, done, onError){
+module.exports.update = function(params, done, onError){
+    const name = params.name ? SqlString.escape(params.name) : "name";
+    const price = params.price ? SqlString.escape(params.price) : "price";
     db.get().query(
-        SqlString.format('UPDATE toppings SET name = ?, price = ? WHERE id = ?',
-        [params.name, params.price, id]),
+        `UPDATE toppings SET name = ${name}, price = ${price} WHERE id = ${params.id}`,
         (error, result, fields)=>{
             if(error){
                 onError(error);

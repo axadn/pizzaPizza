@@ -29740,7 +29740,7 @@ var post = exports.post = function post(params) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.get = undefined;
+exports.put = exports.get = undefined;
 
 var _axios = __webpack_require__(161);
 
@@ -29750,6 +29750,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var get = exports.get = function get() {
   return _axios2.default.get("/api/sizes");
+};
+var put = exports.put = function put(queries) {
+  return _axios2.default.put("/api/sizes");
 };
 
 /***/ }),
@@ -29762,7 +29765,7 @@ var get = exports.get = function get() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.get = undefined;
+exports.put = exports.get = undefined;
 
 var _axios = __webpack_require__(161);
 
@@ -29772,6 +29775,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var get = exports.get = function get() {
   return _axios2.default.get("/api/toppings");
+};
+var put = exports.put = function put(queries) {
+  return _axios2.default.put("/api/toppings");
 };
 
 /***/ }),
@@ -30186,6 +30192,8 @@ var AdminDash = function (_React$Component) {
 
         _this.handleChange = _this.handleChange.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
+        _this.freshState = _this.freshState.bind(_this);
+        _this.setState = _this.setState.bind(_this);
         return _this;
     }
 
@@ -30262,7 +30270,13 @@ var AdminDash = function (_React$Component) {
         }
     }, {
         key: "handleSubmit",
-        value: function handleSubmit(e) {}
+        value: function handleSubmit(key) {
+            var editKey = key + "Edits";
+            switch (key) {
+                case "sizes":
+                case "toppings":
+            }
+        }
     }, {
         key: "handlePriceBlur",
         value: function handlePriceBlur(key1, key2, key3) {
@@ -30344,6 +30358,13 @@ var AdminDash = function (_React$Component) {
                         "button",
                         null,
                         "Apply Changes"
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: function onClick() {
+                                return _this3.setState(_this3.freshState(_this3.props));
+                            } },
+                        " Revert"
                     )
                 ) : ""
             );
