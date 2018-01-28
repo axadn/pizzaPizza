@@ -50,11 +50,14 @@ export default class AdminDash extends React.Component{
         return e=>{
             e.preventDefault();
             e.stopPropagation();
+            debugger;
             const newState = ({}, this.state);
             if(newState[editKey][key2]){
                 if(newState[key1][key2][key3]=== e.target.value){
+                    debugger;
                     delete newState[editKey][key2][key3];
                     if(Object.keys(newState[editKey][key2]).length === 1){
+                        debugger;
                         delete newState[editKey][key2];
                     }
                 }else{
@@ -86,7 +89,8 @@ export default class AdminDash extends React.Component{
         return e=>{
             e.stopPropagation();
             e.preventDefault();
-            e.target.value = parseFloat(e.target.value).toFixed(2);
+            const price = parseFloat(e.target.value);
+            e.target.value = Math.min(999.99, price).toFixed(2);
             changeHandler(e);
         }
     }
@@ -101,7 +105,7 @@ export default class AdminDash extends React.Component{
         return <fieldset>
             <legend>Edit {key}</legend>
             {this.state[key].map((el, idx)=>{
-                if(this.state[editKey][idx] && this.state[editKey][idx].name){
+                if(this.state[editKey][idx] && this.state[editKey][idx].hasOwnProperty("name")){
                     name = this.state[editKey][idx].name;
                     nameDirty = true;
                     ++editsCount;
@@ -110,7 +114,7 @@ export default class AdminDash extends React.Component{
                     name = el.name;
                     nameDirty = false;
                 }
-                if(this.state[editKey][idx] && this.state[editKey][idx].price){
+                if(this.state[editKey][idx] && this.state[editKey][idx].hasOwnProperty("price")){
                     price = this.state[editKey][idx].price;
                     priceDirty = true;
                     ++editsCount;

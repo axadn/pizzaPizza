@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         store.dispatch(receiveCart(JSON.parse(getCookie("cart"))));
     }
     catch(err){
-        
+            
     }
     ReactDOM.render(<Root store={store}/>, root);
 });

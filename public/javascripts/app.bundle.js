@@ -30343,11 +30343,14 @@ var AdminDash = function (_React$Component) {
             return function (e) {
                 e.preventDefault();
                 e.stopPropagation();
+                debugger;
                 var newState = ({}, _this2.state);
                 if (newState[editKey][key2]) {
                     if (newState[key1][key2][key3] === e.target.value) {
+                        debugger;
                         delete newState[editKey][key2][key3];
                         if (Object.keys(newState[editKey][key2]).length === 1) {
+                            debugger;
                             delete newState[editKey][key2];
                         }
                     } else {
@@ -30384,7 +30387,8 @@ var AdminDash = function (_React$Component) {
             return function (e) {
                 e.stopPropagation();
                 e.preventDefault();
-                e.target.value = parseFloat(e.target.value).toFixed(2);
+                var price = parseFloat(e.target.value);
+                e.target.value = Math.min(999.99, price).toFixed(2);
                 changeHandler(e);
             };
         }
@@ -30414,7 +30418,7 @@ var AdminDash = function (_React$Component) {
                     key
                 ),
                 this.state[key].map(function (el, idx) {
-                    if (_this4.state[editKey][idx] && _this4.state[editKey][idx].name) {
+                    if (_this4.state[editKey][idx] && _this4.state[editKey][idx].hasOwnProperty("name")) {
                         name = _this4.state[editKey][idx].name;
                         nameDirty = true;
                         ++editsCount;
@@ -30422,7 +30426,7 @@ var AdminDash = function (_React$Component) {
                         name = el.name;
                         nameDirty = false;
                     }
-                    if (_this4.state[editKey][idx] && _this4.state[editKey][idx].price) {
+                    if (_this4.state[editKey][idx] && _this4.state[editKey][idx].hasOwnProperty("price")) {
                         price = _this4.state[editKey][idx].price;
                         priceDirty = true;
                         ++editsCount;
