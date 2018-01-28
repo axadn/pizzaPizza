@@ -14,27 +14,36 @@ export default class Cart extends React.Component{
     }
     formatPizza(pizza){
         const info = this.props.getPizzaInfo(pizza);
-        return <div className="cart-pizza-info">
+        return {jsx: <div className="cart-pizza-info">
             <div> {info.sizeName}</div>
             <div> {info.toppingNames.join(", ")}</div>
-            <div> {formatPrice(info.total)}</div>
-        </div>
+            <div> <a>{formatPrice(info.total)}</a></div>
+        </div>,
+        total: info.total};
     }
     renderPizzas(){
-        return <ul className = "cart-pizza-list">
-        {this.props.pizzas.map((pizza, idx)=>(
-            <li key={`cartItem${idx}`}>
-                {this.formatPizza(pizza)}
+        let total = 0;
+        let pizzaInfo;
+        return {jsx: <ul className = "cart-pizza-list">
+        {this.props.pizzas.map((pizza, idx)=>{
+            pizzaInfo = this.formatPizza(pizza);
+            total += pizzaInfo.total;
+            return <li key={`cartItem${idx}`}>
+                {pizzaInfo.jsx}
                 <button onClick ={this.handleDelete(idx)}>delete</button>
-            </li>
-        ))}
-        </ul>;
+            </li>;
+        })}
+        </ul>,
+        total};
     }
     render(){
+        const pizzas = this.renderPizzas();
         return <div className="cart-component">
-            {this.renderPizzas()}
+            <h2>Your Cart</h2>
+            {pizzas.jsx}
             <button onClick={e=> window.location="/#/"}>Add Pizza</button>
             <button>Check out</button>
+            <div> Total: <a>{formatPrice(pizzas.total)}</a></div>
         </div>
     };
 }

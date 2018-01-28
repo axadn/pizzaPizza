@@ -84,7 +84,7 @@ export default class Order extends React.Component{
                 total += this.props.toppings[id].price;
             });
            return <div className="pizza-checkout-container">
-               <a>Total: {formatPrice(total)}</a>
+               <div>Total: <a>{formatPrice(total)}</a></div>
                <button onClick={this.handleSubmit}>Add To Cart</button>
             </div>;
         }
@@ -117,6 +117,7 @@ export default class Order extends React.Component{
     render(){
         return(
             <div className= "order-component">
+                <h2> Order a Pizza</h2>
                 <form className="pizza-customization-form">
                     {this.generateSizeSelect()}
                     {this.generateToppingsSelect()}

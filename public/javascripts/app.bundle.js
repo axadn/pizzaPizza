@@ -25887,10 +25887,14 @@ var Order = function (_React$Component) {
                     "div",
                     { className: "pizza-checkout-container" },
                     _react2.default.createElement(
-                        "a",
+                        "div",
                         null,
                         "Total: ",
-                        (0, _string.formatPrice)(total)
+                        _react2.default.createElement(
+                            "a",
+                            null,
+                            (0, _string.formatPrice)(total)
+                        )
                     ),
                     _react2.default.createElement(
                         "button",
@@ -25951,6 +25955,11 @@ var Order = function (_React$Component) {
             return _react2.default.createElement(
                 "div",
                 { className: "order-component" },
+                _react2.default.createElement(
+                    "h2",
+                    null,
+                    " Order a Pizza"
+                ),
                 _react2.default.createElement(
                     "form",
                     { className: "pizza-customization-form" },
@@ -26083,11 +26092,13 @@ var SessionButtons = function (_React$Component) {
                 return _react2.default.createElement(
                     "div",
                     { className: "user-button" },
+                    "Hello, ",
                     _react2.default.createElement(
                         "a",
                         null,
                         this.props.currentUser.username
                     ),
+                    "!",
                     _react2.default.createElement(
                         "button",
                         { onClick: this.props.logout },
@@ -29885,58 +29896,74 @@ var Cart = function (_React$Component) {
         key: "formatPizza",
         value: function formatPizza(pizza) {
             var info = this.props.getPizzaInfo(pizza);
-            return _react2.default.createElement(
-                "div",
-                { className: "cart-pizza-info" },
-                _react2.default.createElement(
+            return { jsx: _react2.default.createElement(
                     "div",
-                    null,
-                    " ",
-                    info.sizeName
+                    { className: "cart-pizza-info" },
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        " ",
+                        info.sizeName
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        " ",
+                        info.toppingNames.join(", ")
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        " ",
+                        _react2.default.createElement(
+                            "a",
+                            null,
+                            (0, _string.formatPrice)(info.total)
+                        )
+                    )
                 ),
-                _react2.default.createElement(
-                    "div",
-                    null,
-                    " ",
-                    info.toppingNames.join(", ")
-                ),
-                _react2.default.createElement(
-                    "div",
-                    null,
-                    " ",
-                    (0, _string.formatPrice)(info.total)
-                )
-            );
+                total: info.total };
         }
     }, {
         key: "renderPizzas",
         value: function renderPizzas() {
             var _this3 = this;
 
-            return _react2.default.createElement(
-                "ul",
-                { className: "cart-pizza-list" },
-                this.props.pizzas.map(function (pizza, idx) {
-                    return _react2.default.createElement(
-                        "li",
-                        { key: "cartItem" + idx },
-                        _this3.formatPizza(pizza),
-                        _react2.default.createElement(
-                            "button",
-                            { onClick: _this3.handleDelete(idx) },
-                            "delete"
-                        )
-                    );
-                })
-            );
+            var total = 0;
+            var pizzaInfo = void 0;
+            return { jsx: _react2.default.createElement(
+                    "ul",
+                    { className: "cart-pizza-list" },
+                    this.props.pizzas.map(function (pizza, idx) {
+                        pizzaInfo = _this3.formatPizza(pizza);
+                        total += pizzaInfo.total;
+                        return _react2.default.createElement(
+                            "li",
+                            { key: "cartItem" + idx },
+                            pizzaInfo.jsx,
+                            _react2.default.createElement(
+                                "button",
+                                { onClick: _this3.handleDelete(idx) },
+                                "delete"
+                            )
+                        );
+                    })
+                ),
+                total: total };
         }
     }, {
         key: "render",
         value: function render() {
+            var pizzas = this.renderPizzas();
             return _react2.default.createElement(
                 "div",
                 { className: "cart-component" },
-                this.renderPizzas(),
+                _react2.default.createElement(
+                    "h2",
+                    null,
+                    "Your Cart"
+                ),
+                pizzas.jsx,
                 _react2.default.createElement(
                     "button",
                     { onClick: function onClick(e) {
@@ -29948,6 +29975,16 @@ var Cart = function (_React$Component) {
                     "button",
                     null,
                     "Check out"
+                ),
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    " Total: ",
+                    _react2.default.createElement(
+                        "a",
+                        null,
+                        (0, _string.formatPrice)(pizzas.total)
+                    )
                 )
             );
         }

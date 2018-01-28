@@ -7,7 +7,7 @@ export default class SessionButtons extends React.Component{
     render(){
         if(this.props.currentUser){
             return <div className="user-button">
-                <a>{this.props.currentUser.username}</a>
+                Hello, <a>{this.props.currentUser.username}</a>!
                 <button onClick={this.props.logout}>
                     log out
                 </button>
