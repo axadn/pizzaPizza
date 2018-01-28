@@ -26076,7 +26076,7 @@ exports.default = function (props) {
             _react2.default.createElement(
                 _reactRouterDom.NavLink,
                 { exact: true, to: "/cart" },
-                _react2.default.createElement("i", { "class": "fa fa-shopping-cart", "aria-hidden": "true" })
+                _react2.default.createElement("i", { className: "fa fa-shopping-cart", "aria-hidden": "true" })
             )
         ),
         _react2.default.createElement(_session_buttons_container2.default, null)
