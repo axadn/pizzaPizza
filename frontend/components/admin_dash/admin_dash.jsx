@@ -20,8 +20,8 @@ export default class AdminDash extends React.Component{
     }
     componentWillMount(){
         if(this.loaded()){
-            this.setState(this.freshState("sizes", newProps));
-            this.setState(this.freshState("toppings", newProps));
+            this.setState(this.freshState("sizes", this.props));
+            this.setState(this.freshState("toppings", this.props));
         }
         if(Object.keys(this.props.toppings).length === 0){
             this.props.getSizes();
