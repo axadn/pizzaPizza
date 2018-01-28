@@ -28,3 +28,10 @@ export const getToppings = (done, onError) => dispatch =>{
         }
     });
 };
+
+export const putToppings = (queries, done, onError) => dispatch =>{
+    put(queries).then(({data})=>{
+        if(data.errors)onError(data.errors);
+        else done(data);
+    });
+};

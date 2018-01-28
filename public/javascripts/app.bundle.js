@@ -26350,7 +26350,7 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getSizes = exports.addSize = exports.removeSize = exports.receiveSizes = exports.ADD_SIZE = exports.REMOVE_SIZE = exports.RECEIVE_SIZES = undefined;
+exports.putSizes = exports.getSizes = exports.addSize = exports.removeSize = exports.receiveSizes = exports.ADD_SIZE = exports.REMOVE_SIZE = exports.RECEIVE_SIZES = undefined;
 
 var _sizes = __webpack_require__(182);
 
@@ -26388,6 +26388,16 @@ var getSizes = exports.getSizes = function getSizes(done, onError) {
             } else {
                 done(data);
             }
+        });
+    };
+};
+
+var putSizes = exports.putSizes = function putSizes(queries, done, onError) {
+    return function (dispatch) {
+        (0, _sizes.put)(queries).then(function (_ref2) {
+            var data = _ref2.data;
+
+            if (data.errors) onError(data.errors);else done(data);
         });
     };
 };
@@ -26434,7 +26444,7 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getToppings = exports.addTopping = exports.removeTopping = exports.receiveToppings = exports.ADD_TOPPING = exports.REMOVE_TOPPING = exports.RECEIVE_TOPPINGS = undefined;
+exports.putToppings = exports.getToppings = exports.addTopping = exports.removeTopping = exports.receiveToppings = exports.ADD_TOPPING = exports.REMOVE_TOPPING = exports.RECEIVE_TOPPINGS = undefined;
 
 var _toppings = __webpack_require__(183);
 
@@ -26472,6 +26482,16 @@ var getToppings = exports.getToppings = function getToppings(done, onError) {
             } else {
                 done(data);
             }
+        });
+    };
+};
+
+var putToppings = exports.putToppings = function putToppings(queries, done, onError) {
+    return function (dispatch) {
+        put(queries).then(function (_ref2) {
+            var data = _ref2.data;
+
+            if (data.errors) onError(data.errors);else done(data);
         });
     };
 };

@@ -1,7 +1,7 @@
 export const RECEIVE_SIZES = "RECEIVE_SIZES";
 export const REMOVE_SIZE = "REMOVE_SIZE";
 export const ADD_SIZE = "ADD_SIZE";
-import {get} from "Utils/api/sizes";
+import {get, put} from "Utils/api/sizes";
 
 export const receiveSizes = sizes =>({
     sizes,
@@ -26,5 +26,12 @@ export const getSizes = (done, onError) => dispatch =>{
         else{
             done(data);
         }
+    });
+};
+
+export const putSizes = (queries, done, onError) => dispatch =>{
+    put(queries).then(({data})=>{
+        if(data.errors)onError(data.errors);
+        else done(data);
     });
 };
