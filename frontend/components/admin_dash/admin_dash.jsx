@@ -10,12 +10,17 @@ export default class AdminDash extends React.Component{
         return Object.keys(this.props.toppings).length > 0 &&
         Object.keys(this.props.sizes).length > 0;
     }
+    freshState(props){
+        return{
+            sizes: this.formatCollection(this.sortSizes(props.sizes)),
+            sizesEdits: {},
+            toppings: this.formatCollection(this.sortToppings(props.toppings)),
+            toppingsEdits: {}     
+        };
+    }
     componentWillMount(){
         if(this.loaded()){
-            this.setState({
-                sizes: this.formatPrices(this.sortSizes(this.props.sizes)),
-                toppings: this.formatPrices(this.sortToppings(this.props.toppings))      
-            });
+            this.setState(this.freshState(this.props));
         }
         if(Object.keys(this.props.toppings).length === 0){
             this.props.getSizes();
@@ -25,12 +30,9 @@ export default class AdminDash extends React.Component{
         }
     }
     componentWillReceiveProps(newProps){
-        this.setState({
-            sizes: this.formatPrices(this.sortSizes(newProps.sizes)),
-            toppings: this.formatPrices(this.sortToppings(newProps.toppings))        
-        });
+        this.setState(this.freshState(newProps));
     }
-    formatPrices(collection){
+    formatCollection(collection){
         let copy;
         for(let i = 0; i <collection.length; ++i){
             if(collection[i].price.toFixed){
@@ -42,34 +44,75 @@ export default class AdminDash extends React.Component{
         return collection;
     }
     handleChange(key1, key2, key3){
+        const editKey = key1 + "Edits";
         return e=>{
+            e.preventDefault();
+            e.stopPropagation();
             const newState = ({}, this.state);
-            newState[key1][key2][key3] = e.target.value;
+            if(newState[editKey][key2]){
+                if(newState[key1][key2][key3]=== e.target.value){
+                    delete newState[editKey][key2][key3];
+                    if(Object.keys(newState[editKey][key2]).length === 0){
+                        delete newState[editKey][key2];
+                    }
+                }else{
+                    newState[editKey][key2][key3] = e.target.value;
+                }
+            }
+            else{
+                newState[editKey][key2] = {[key3]: e.target.value}
+            }
             this.setState(newState);
         };
     }
-    handlePriceInput(e){
-        e.target.value = Math.abs(e.target.value).toFixed(2);
-    }
-    handleSubmit(){
+    handleSubmit(e){
 
     }
     loaded(){
         return Object.keys(this.props.toppings).length > 0 &&
         Object.keys(this.props.sizes).length > 0;
     }
-    renderSizesEdit(){
+    renderEditGroup(key){
+        let name, price, nameDirty, priceDirty;
+        const editKey = key + "Edits";
+        let editsCount = 0;
         return <fieldset>
-            <legend>Edit Sizes</legend>
-            {this.state.sizes.map((size, idx)=>{
-                return <div className="dashboard-size-edit-group" key={`size-edit-group${size.id}`}>
-                    <input type="text" value={size.name} onChange={this.handleChange("sizes",idx,"name")}/>
+            <legend>Edit {key}</legend>
+            {this.state[key].map((el, idx)=>{
+                if(this.state[editKey][idx] && this.state[editKey][idx].name){
+                    name = this.state[editKey][idx].name;
+                    nameDirty = true;
+                    ++editsCount;
+                }
+                else{
+                    name = el.name;
+                    nameDirty = false;
+                }
+                if(this.state[editKey][idx] && this.state[editKey][idx].price){
+                    price = this.state[editKey][idx].price;
+                    priceDirty = true;
+                    ++editsCount;
+                } 
+                else{
+                    price = el.price;
+                    priceDirty = false;
+                }
+                return <div className={`dashboard-${key}-edit-group`} key={`size-${key}-group${el.id}`}>
+                    <input type="text" className={nameDirty? "dirty": ""}
+                     value={name} onChange={this.handleChange(key,idx,"name")}/>
                     $
-                    <input type="number" min="0.01" max="1000.00" step="0.01" 
-                        value={size.price} onBlur={this.handlePriceInput} onChange={this.handleChange("sizes",idx,"price")}/>
+                    <input type="number" min="0.01" max="1000.00" step="0.01" className={priceDirty? "dirty": ""} 
+                        value={price} onBlur={this.handlePriceInput} 
+                        onChange={this.handleChange(key,idx,"price")}/>
                 </div>;
             })}
-        </fieldset>;
+            {editsCount > 0 ? 
+                        <div className={`dashboard-${key}-edits-save-container`}>
+                            <div><a className="dirty">{editsCount}</a> unsaved changes</div>
+                            <button >Apply Changes</button>
+                        </div>
+                    :""}
+        </fieldset>;  
     }
     sortToppings(toppings){
         return Object.keys(toppings).map(id=>toppings[id]).sort((toppingA, toppingB)=>
@@ -81,15 +124,11 @@ export default class AdminDash extends React.Component{
             (sizeA.price < sizeB.price)? -1 : 1 
         );
     }
-    renderToppingsEdit(){
-        return <fieldset>
-
-        </fieldset>;
-    }
     render(){
         if(this.loaded()){
             return <div className="admin-dash-component">
-                {this.renderSizesEdit()}
+                {this.renderEditGroup("sizes")}
+                {this.renderEditGroup("toppings")}
             </div>;
         }
         else{

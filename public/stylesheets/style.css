@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+input.dirty{
+  background-color: rgb(184, 93, 93);
+}
+
+a.dirty{
+  color: rgb(184, 93, 93);
+}

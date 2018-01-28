@@ -30149,6 +30149,8 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -30174,13 +30176,20 @@ var AdminDash = function (_React$Component) {
             return Object.keys(this.props.toppings).length > 0 && Object.keys(this.props.sizes).length > 0;
         }
     }, {
+        key: "freshState",
+        value: function freshState(props) {
+            return {
+                sizes: this.formatCollection(this.sortSizes(props.sizes)),
+                sizesEdits: {},
+                toppings: this.formatCollection(this.sortToppings(props.toppings)),
+                toppingsEdits: {}
+            };
+        }
+    }, {
         key: "componentWillMount",
         value: function componentWillMount() {
             if (this.loaded()) {
-                this.setState({
-                    sizes: this.formatPrices(this.sortSizes(this.props.sizes)),
-                    toppings: this.formatPrices(this.sortToppings(this.props.toppings))
-                });
+                this.setState(this.freshState(this.props));
             }
             if (Object.keys(this.props.toppings).length === 0) {
                 this.props.getSizes();
@@ -30192,14 +30201,11 @@ var AdminDash = function (_React$Component) {
     }, {
         key: "componentWillReceiveProps",
         value: function componentWillReceiveProps(newProps) {
-            this.setState({
-                sizes: this.formatPrices(this.sortSizes(newProps.sizes)),
-                toppings: this.formatPrices(this.sortToppings(newProps.toppings))
-            });
+            this.setState(this.freshState(newProps));
         }
     }, {
-        key: "formatPrices",
-        value: function formatPrices(collection) {
+        key: "formatCollection",
+        value: function formatCollection(collection) {
             var copy = void 0;
             for (var i = 0; i < collection.length; ++i) {
                 if (collection[i].price.toFixed) {
@@ -30215,48 +30221,101 @@ var AdminDash = function (_React$Component) {
         value: function handleChange(key1, key2, key3) {
             var _this2 = this;
 
+            var editKey = key1 + "Edits";
             return function (e) {
+                e.preventDefault();
+                e.stopPropagation();
                 var newState = ({}, _this2.state);
-                newState[key1][key2][key3] = e.target.value;
+                if (newState[editKey][key2]) {
+                    if (newState[key1][key2][key3] === e.target.value) {
+                        delete newState[editKey][key2][key3];
+                        if (Object.keys(newState[editKey][key2]).length === 0) {
+                            delete newState[editKey][key2];
+                        }
+                    } else {
+                        newState[editKey][key2][key3] = e.target.value;
+                    }
+                } else {
+                    newState[editKey][key2] = _defineProperty({}, key3, e.target.value);
+                }
                 _this2.setState(newState);
             };
         }
     }, {
-        key: "handlePriceInput",
-        value: function handlePriceInput(e) {
-            e.target.value = Math.abs(e.target.value).toFixed(2);
-        }
-    }, {
         key: "handleSubmit",
-        value: function handleSubmit() {}
+        value: function handleSubmit(e) {}
     }, {
         key: "loaded",
         value: function loaded() {
             return Object.keys(this.props.toppings).length > 0 && Object.keys(this.props.sizes).length > 0;
         }
     }, {
-        key: "renderSizesEdit",
-        value: function renderSizesEdit() {
+        key: "renderEditGroup",
+        value: function renderEditGroup(key) {
             var _this3 = this;
 
+            var name = void 0,
+                price = void 0,
+                nameDirty = void 0,
+                priceDirty = void 0;
+            var editKey = key + "Edits";
+            var editsCount = 0;
             return _react2.default.createElement(
                 "fieldset",
                 null,
                 _react2.default.createElement(
                     "legend",
                     null,
-                    "Edit Sizes"
+                    "Edit ",
+                    key
                 ),
-                this.state.sizes.map(function (size, idx) {
+                this.state[key].map(function (el, idx) {
+                    if (_this3.state[editKey][idx] && _this3.state[editKey][idx].name) {
+                        name = _this3.state[editKey][idx].name;
+                        nameDirty = true;
+                        ++editsCount;
+                    } else {
+                        name = el.name;
+                        nameDirty = false;
+                    }
+                    if (_this3.state[editKey][idx] && _this3.state[editKey][idx].price) {
+                        price = _this3.state[editKey][idx].price;
+                        priceDirty = true;
+                        ++editsCount;
+                    } else {
+                        price = el.price;
+                        priceDirty = false;
+                    }
                     return _react2.default.createElement(
                         "div",
-                        { className: "dashboard-size-edit-group", key: "size-edit-group" + size.id },
-                        _react2.default.createElement("input", { type: "text", value: size.name, onChange: _this3.handleChange("sizes", idx, "name") }),
+                        { className: "dashboard-" + key + "-edit-group", key: "size-" + key + "-group" + el.id },
+                        _react2.default.createElement("input", { type: "text", className: nameDirty ? "dirty" : "",
+                            value: name, onChange: _this3.handleChange(key, idx, "name") }),
                         "$",
-                        _react2.default.createElement("input", { type: "number", min: "0.01", max: "1000.00", step: "0.01",
-                            value: size.price, onBlur: _this3.handlePriceInput, onChange: _this3.handleChange("sizes", idx, "price") })
+                        _react2.default.createElement("input", { type: "number", min: "0.01", max: "1000.00", step: "0.01", className: priceDirty ? "dirty" : "",
+                            value: price, onBlur: _this3.handlePriceInput,
+                            onChange: _this3.handleChange(key, idx, "price") })
                     );
-                })
+                }),
+                editsCount > 0 ? _react2.default.createElement(
+                    "div",
+                    { className: "dashboard-" + key + "-edits-save-container" },
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        _react2.default.createElement(
+                            "a",
+                            { className: "dirty" },
+                            editsCount
+                        ),
+                        " unsaved changes"
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        null,
+                        "Apply Changes"
+                    )
+                ) : ""
             );
         }
     }, {
@@ -30278,18 +30337,14 @@ var AdminDash = function (_React$Component) {
             });
         }
     }, {
-        key: "renderToppingsEdit",
-        value: function renderToppingsEdit() {
-            return _react2.default.createElement("fieldset", null);
-        }
-    }, {
         key: "render",
         value: function render() {
             if (this.loaded()) {
                 return _react2.default.createElement(
                     "div",
                     { className: "admin-dash-component" },
-                    this.renderSizesEdit()
+                    this.renderEditGroup("sizes"),
+                    this.renderEditGroup("toppings")
                 );
             } else {
                 return _react2.default.createElement(
