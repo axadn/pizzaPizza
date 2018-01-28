@@ -7,6 +7,7 @@ Pizza Pizza is a pizza ordering application built with a Node.js backend and a R
   * open a terminal in the project directory
   * run the following commands:
 ````
+     npm install
      node createDatabase.js
      node seed.js
      node app.js
