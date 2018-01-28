@@ -3,7 +3,8 @@ import React from "react";
 export default class AdminDash extends React.Component{
     constructor(props){
         super(props);
-    
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     loaded(){
         return Object.keys(this.props.toppings).length > 0 &&
@@ -12,8 +13,8 @@ export default class AdminDash extends React.Component{
     componentWillMount(){
         if(this.loaded()){
             this.setState({
-                sizes: this.sortSizes(this.props.sizes),
-                toppings: this.sortToppings(this.props.toppings)        
+                sizes: this.formatPrices(this.sortSizes(this.props.sizes)),
+                toppings: this.formatPrices(this.sortToppings(this.props.toppings))      
             });
         }
         if(Object.keys(this.props.toppings).length === 0){
@@ -25,14 +26,32 @@ export default class AdminDash extends React.Component{
     }
     componentWillReceiveProps(newProps){
         this.setState({
-            sizes: this.sortSizes(newProps.sizes),
-            toppings: this.sortToppings(newProps.toppings)        
+            sizes: this.formatPrices(this.sortSizes(newProps.sizes)),
+            toppings: this.formatPrices(this.sortToppings(newProps.toppings))        
         });
     }
-    handleToppingSubmit(e){
-        
+    formatPrices(collection){
+        let copy;
+        for(let i = 0; i <collection.length; ++i){
+            if(collection[i].price.toFixed){
+                copy = Object.assign({}, collection[i]);
+                copy.price = copy.price.toFixed(2);
+                collection[i] = copy;
+            }
+        }
+        return collection;
     }
-    handleSizeSubmit(e){
+    handleChange(key1, key2, key3){
+        return e=>{
+            const newState = ({}, this.state);
+            newState[key1][key2][key3] = e.target.value;
+            this.setState(newState);
+        };
+    }
+    handlePriceInput(e){
+        e.target.value = Math.abs(e.target.value).toFixed(2);
+    }
+    handleSubmit(){
 
     }
     loaded(){
@@ -41,10 +60,14 @@ export default class AdminDash extends React.Component{
     }
     renderSizesEdit(){
         return <fieldset>
-            {this.state.sizes.map(size=>{
-                <div className="dashboard-size-edit-group">
-                    <input type="number" min="0.00" max="10000.00" step="0.01" />
-                </div>
+            <legend>Edit Sizes</legend>
+            {this.state.sizes.map((size, idx)=>{
+                return <div className="dashboard-size-edit-group" key={`size-edit-group${size.id}`}>
+                    <input type="text" value={size.name} onChange={this.handleChange("sizes",idx,"name")}/>
+                    $
+                    <input type="number" min="0.01" max="1000.00" step="0.01" 
+                        value={size.price} onBlur={this.handlePriceInput} onChange={this.handleChange("sizes",idx,"price")}/>
+                </div>;
             })}
         </fieldset>;
     }

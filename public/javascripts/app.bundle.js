@@ -29822,16 +29822,10 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 var formatPrice = exports.formatPrice = function formatPrice(price) {
-    var str = price.toString().split(".");
-    var wholePart = str[0];
-    var decimalPart = str[1] || "00";
-    while (decimalPart.length < 2) {
-        decimalPart += "0";
-    }
-    return "$" + wholePart + "." + decimalPart;
+  return price.toFixed(2);
 };
 
 /***/ }),
@@ -30167,7 +30161,11 @@ var AdminDash = function (_React$Component) {
     function AdminDash(props) {
         _classCallCheck(this, AdminDash);
 
-        return _possibleConstructorReturn(this, (AdminDash.__proto__ || Object.getPrototypeOf(AdminDash)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (AdminDash.__proto__ || Object.getPrototypeOf(AdminDash)).call(this, props));
+
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
+        return _this;
     }
 
     _createClass(AdminDash, [{
@@ -30180,8 +30178,8 @@ var AdminDash = function (_React$Component) {
         value: function componentWillMount() {
             if (this.loaded()) {
                 this.setState({
-                    sizes: this.sortSizes(this.props.sizes),
-                    toppings: this.sortToppings(this.props.toppings)
+                    sizes: this.formatPrices(this.sortSizes(this.props.sizes)),
+                    toppings: this.formatPrices(this.sortToppings(this.props.toppings))
                 });
             }
             if (Object.keys(this.props.toppings).length === 0) {
@@ -30195,16 +30193,42 @@ var AdminDash = function (_React$Component) {
         key: "componentWillReceiveProps",
         value: function componentWillReceiveProps(newProps) {
             this.setState({
-                sizes: this.sortSizes(newProps.sizes),
-                toppings: this.sortToppings(newProps.toppings)
+                sizes: this.formatPrices(this.sortSizes(newProps.sizes)),
+                toppings: this.formatPrices(this.sortToppings(newProps.toppings))
             });
         }
     }, {
-        key: "handleToppingSubmit",
-        value: function handleToppingSubmit(e) {}
+        key: "formatPrices",
+        value: function formatPrices(collection) {
+            var copy = void 0;
+            for (var i = 0; i < collection.length; ++i) {
+                if (collection[i].price.toFixed) {
+                    copy = Object.assign({}, collection[i]);
+                    copy.price = copy.price.toFixed(2);
+                    collection[i] = copy;
+                }
+            }
+            return collection;
+        }
     }, {
-        key: "handleSizeSubmit",
-        value: function handleSizeSubmit(e) {}
+        key: "handleChange",
+        value: function handleChange(key1, key2, key3) {
+            var _this2 = this;
+
+            return function (e) {
+                var newState = ({}, _this2.state);
+                newState[key1][key2][key3] = e.target.value;
+                _this2.setState(newState);
+            };
+        }
+    }, {
+        key: "handlePriceInput",
+        value: function handlePriceInput(e) {
+            e.target.value = Math.abs(e.target.value).toFixed(2);
+        }
+    }, {
+        key: "handleSubmit",
+        value: function handleSubmit() {}
     }, {
         key: "loaded",
         value: function loaded() {
@@ -30213,14 +30237,24 @@ var AdminDash = function (_React$Component) {
     }, {
         key: "renderSizesEdit",
         value: function renderSizesEdit() {
+            var _this3 = this;
+
             return _react2.default.createElement(
                 "fieldset",
                 null,
-                this.state.sizes.map(function (size) {
-                    _react2.default.createElement(
+                _react2.default.createElement(
+                    "legend",
+                    null,
+                    "Edit Sizes"
+                ),
+                this.state.sizes.map(function (size, idx) {
+                    return _react2.default.createElement(
                         "div",
-                        { className: "dashboard-size-edit-group" },
-                        _react2.default.createElement("input", { type: "number", min: "0.00", max: "10000.00", step: "0.01" })
+                        { className: "dashboard-size-edit-group", key: "size-edit-group" + size.id },
+                        _react2.default.createElement("input", { type: "text", value: size.name, onChange: _this3.handleChange("sizes", idx, "name") }),
+                        "$",
+                        _react2.default.createElement("input", { type: "number", min: "0.01", max: "1000.00", step: "0.01",
+                            value: size.price, onBlur: _this3.handlePriceInput, onChange: _this3.handleChange("sizes", idx, "price") })
                     );
                 })
             );
