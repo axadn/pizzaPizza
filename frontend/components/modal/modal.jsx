@@ -24,7 +24,7 @@ export default class m extends React.Component{
         }
        return <Modal isOpen={this.props.isOpen} className = "auth-modal" overlayClassName = "modal-overlay">
             <SessionFormContainer/>
-            <button onClick={this.handleClose} className="modal-exit">cancel</button>
+            <i onClick={this.handleClose} className="fa fa-window-close modal-exit" aria-hidden="true"></i>
             <ul className = "modal-errors">
                 {errors}                
             </ul>

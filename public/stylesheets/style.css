@@ -85,9 +85,18 @@ a.selected{
   display: flex;
   width: 400px;
   height: 400px;
-  position: initial;
+  position: relative;
 }
+.modal-exit{
+  font-size: 20px;
+  position: absolute;
+  top: 7px;
+  right: 7px;
+}
+.modal-exit:hover{
+  cursor: pointer;
 
+}
 .modal-overlay{
   position: fixed;
   top: 0px;

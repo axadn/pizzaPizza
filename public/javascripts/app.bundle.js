@@ -29450,11 +29450,7 @@ var m = function (_React$Component) {
                     _reactModal2["default"],
                     { isOpen: this.props.isOpen, className: "auth-modal", overlayClassName: "modal-overlay" },
                     _react2["default"].createElement(_session_form_container2["default"], null),
-                    _react2["default"].createElement(
-                        "button",
-                        { onClick: this.handleClose, className: "modal-exit" },
-                        "cancel"
-                    ),
+                    _react2["default"].createElement("i", { onClick: this.handleClose, className: "fa fa-window-close modal-exit", "aria-hidden": "true" }),
                     _react2["default"].createElement(
                         "ul",
                         { className: "modal-errors" },
