@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { shallow } from 'enzyme';
-import Order from '../components/order/order.jsx';
+import Order from 'Components/order/order.jsx';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure } from 'enzyme';
 configure({ adapter: new Adapter() });
@@ -33,5 +33,15 @@ describe('Order', () => {
   it('should sort toppings alphabetically', ()=>{
     const toppingLabels = tree.find(".pizza-customizaton-form_group label");
     expect(toppingLabels.at(0).text()).toEqual(expect.stringContaining("anchovies"));
+  });
+  it('should add up the total of selected size and toppings', ()=>{
+    const select= tree.find(".size-select-fieldSet select").at(0);
+    select.simulate("change", {target:{value: 1}, stopPropagation: ()=>{}});
+    const balogna = tree.find('.pizza-customizaton-form_group input').at(1);
+    balogna.simulate("change", {target:{value: 1, checked: true}, stopPropagation: ()=>{}});
+    const pepperoni = tree.find('.pizza-customizaton-form_group input').at(2);
+    pepperoni.simulate("change", {target:{value: 0, checked: true}, stopPropagation: ()=>{}});
+    const totalText = tree.find(".pizza-checkout-container").text();
+    expect(totalText).toEqual(expect.stringContaining("43.00"));
   });
 });

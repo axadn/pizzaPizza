@@ -29261,10 +29261,10 @@ var SessionButtons = function (_React$Component) {
         key: "render",
         value: function () {
             function render() {
-                if (this.props.currentUser) {
+                if (this.props.loggedIn) {
                     return _react2["default"].createElement(
                         "div",
-                        { className: "user-button" },
+                        { className: "user-buttons" },
                         "Hello, ",
                         _react2["default"].createElement(
                             "a",

@@ -6,8 +6,8 @@ export default class SessionButtons extends React.Component{
         super(props);
     }
     render(){
-        if(this.props.currentUser){
-            return <div className="user-button">
+        if(this.props.loggedIn){
+            return <div className="user-buttons">
                 Hello, <a>{this.props.currentUser.username}</a>!
                 {this.props.currentUser.is_admin ?
                  <NavLink exact to="/dash">Dashboard</NavLink>
