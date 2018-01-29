@@ -30,7 +30,7 @@ exports.batchFromFile = function batchFromFile(filename, done){
 }
 
 exports.connect = function(done){
-    state.pool = mysql.createConnection({
+    state.pool = mysql.createPool({
         host: 'localhost',
         user: dbConfig.user,
         password: dbConfig.password,
