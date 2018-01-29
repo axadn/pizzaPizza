@@ -6,7 +6,7 @@ db.connect(error=>{
     }
     else{
         console.log("conncected");
-        db.batchFromFile("createDatabase.sql", error=>{
+        db.batchFromFile("applySchema.sql", error=>{
             if(error){
                 console.log(error);
                 process.exit(1);
